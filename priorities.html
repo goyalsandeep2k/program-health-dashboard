@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizational Priority Stack — Kaseya 365</title>
+  <style>
+    :root {
+      --bg:       #080E1B;
+      --surface:  #0F172A;
+      --surface2: #1E293B;
+      --border:   #1E2D45;
+      --text:     #E2E8F0;
+      --muted:    #64748B;
+      --blue:     #3B82F6;
+      --green:    #22C55E;
+      --yellow:   #F59E0B;
+      --red:      #EF4444;
+      --cyan:     #06B6D4;
+      --purple:   #A855F7;
+      --feat:     #3B82F6;
+      --rel:      #EF4444;
+      --plat:     #A855F7;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 28px 32px;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER (exact match to program health page) ── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 22px;
+    }
+    .prog-name { font-size:24px; font-weight:800; color:white; letter-spacing:-0.3px; }
+    .prog-name span { color: var(--blue); }
+    .prog-sub  { font-size:13px; color:var(--muted); margin-top:5px; }
+    .header-right { text-align:right; }
+    .meta { font-size:12px; color:var(--muted); line-height:1.9; margin-top:8px; }
+    .badge {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:5px 13px; border-radius:20px;
+      font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase;
+    }
+    .badge.green  { background:rgba(34,197,94,.15);  color:var(--green);  border:1px solid rgba(34,197,94,.3); }
+    .badge.yellow { background:rgba(245,158,11,.15); color:var(--yellow); border:1px solid rgba(245,158,11,.3); }
+    .badge.blue   { background:rgba(59,130,246,.15); color:var(--blue);   border:1px solid rgba(59,130,246,.3); }
+    .dot { width:7px; height:7px; border-radius:50%; background:currentColor; }
+
+    /* ── MISSION BANNER (exact match) ──────────────── */
+    .mission {
+      background: linear-gradient(135deg,#0D1E38,#0A1F14);
+      border:1px solid var(--border); border-left:4px solid var(--blue);
+      border-radius:10px; padding:16px 22px; margin-bottom:22px;
+    }
+    .mission-lbl { font-size:10px; font-weight:700; letter-spacing:1.5px; color:var(--blue); text-transform:uppercase; margin-bottom:6px; }
+    .mission-txt { font-size:13.5px; color:#CBD5E1; line-height:1.65; }
+
+    /* ── SECTION TITLE ──────────────────────────────── */
+    .sec {
+      font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase;
+      color:var(--muted); margin-bottom:14px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .sec::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* ── CRITERIA CARDS ─────────────────────────────── */
+    .crit-grid {
+      display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:22px;
+    }
+    .crit-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:10px; padding:14px 16px; position:relative; overflow:hidden;
+    }
+    .crit-card::before { content:''; position:absolute; top:0;left:0;right:0; height:3px; }
+    .crit-card:nth-child(1)::before { background:var(--green); }
+    .crit-card:nth-child(2)::before { background:var(--blue); }
+    .crit-card:nth-child(3)::before { background:var(--purple); }
+    .crit-card:nth-child(4)::before { background:var(--yellow); }
+    .crit-card:nth-child(5)::before { background:var(--cyan); }
+    .crit-wt   { font-size:26px; font-weight:900; color:white; letter-spacing:-1px; }
+    .crit-lbl  { font-size:12px; font-weight:700; color:var(--text); margin:3px 0 2px; }
+    .crit-desc { font-size:10px; color:var(--muted); line-height:1.4; }
+    .crit-bar  { height:4px; background:var(--surface2); border-radius:2px; margin-top:8px; overflow:hidden; }
+    .crit-fill { height:100%; border-radius:2px; }
+
+    /* ── LEGEND ─────────────────────────────────────── */
+    .legend { display:flex; gap:20px; align-items:center; margin-bottom:14px; }
+    .leg-item { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted); }
+    .leg-dot  { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+
+    /* ── TABLE ──────────────────────────────────────── */
+    .tbl-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    thead tr { background:var(--surface2); }
+    th {
+      padding:10px 14px; text-align:left; font-size:10px; font-weight:700;
+      letter-spacing:1px; text-transform:uppercase; color:var(--muted);
+      border-bottom:2px solid var(--border); white-space:nowrap;
+    }
+    th.right, td.right { text-align:right; }
+    th.center, td.center { text-align:center; }
+    tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
+    tbody tr:hover { background:rgba(59,130,246,.05); }
+    td { padding:12px 14px; vertical-align:middle; }
+
+    /* Rank badge */
+    .rank {
+      width:30px; height:30px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:12px; font-weight:800;
+    }
+    .rank.gold   { background:linear-gradient(135deg,#B8860B,#FFD700); color:#1A1200; }
+    .rank.silver { background:linear-gradient(135deg,#6B7280,#9CA3AF); color:#0F172A; }
+    .rank.bronze { background:linear-gradient(135deg,#78350F,#CD7F32); color:white; }
+    .rank.mid    { background:var(--surface2); border:1px solid var(--border); color:var(--muted); font-size:11px; }
+    .rank.low    { background:var(--surface2); border:1px solid #1a2438; color:#475569; font-size:11px; }
+
+    /* Program cell */
+    .prog-nm   { font-size:13px; font-weight:600; color:white; }
+    .prog-desc { font-size:11px; color:var(--muted); margin-top:2px; line-height:1.35; max-width:260px; }
+
+    /* Domain badge */
+    .dom {
+      font-size:10px; font-weight:700; padding:3px 9px; border-radius:12px;
+      white-space:nowrap; letter-spacing:.3px;
+    }
+    .dom.feat { background:rgba(59,130,246,.15);  color:var(--feat); border:1px solid rgba(59,130,246,.25); }
+    .dom.rel  { background:rgba(239,68,68,.15);   color:var(--rel);  border:1px solid rgba(239,68,68,.25); }
+    .dom.plat { background:rgba(168,85,247,.15);  color:var(--plat); border:1px solid rgba(168,85,247,.25); }
+
+    /* Annual goal cell */
+    .goal-txt  { font-size:12px; color:#94A3B8; line-height:1.45; max-width:240px; }
+    .goal-kpi  { font-size:11px; font-weight:700; color:white; margin-bottom:3px; }
+
+    /* Score cell */
+    .score-n { font-size:15px; font-weight:800; }
+    .score-n.hi  { color:var(--green); }
+    .score-n.mid { color:var(--yellow); }
+    .score-n.lo  { color:var(--muted); }
+    .score-sub { font-size:10px; color:var(--muted); }
+
+    /* ── REVENUE IMPACT COLUMN (primary ranking criterion) ── */
+    td.rev-cell {
+      background:rgba(34,197,94,.04);
+      border-left:2px solid rgba(34,197,94,.2);
+    }
+    .rev-amt {
+      font-size:17px; font-weight:900; color:var(--green); letter-spacing:-.5px;
+    }
+    .rev-type { font-size:10.5px; color:var(--muted); margin-top:2px; line-height:1.3; }
+    .rev-bar  { height:4px; background:var(--surface2); border-radius:2px; margin-top:7px; overflow:hidden; }
+    .rev-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--green),var(--cyan)); }
+
+    /* ── FOOTER ─────────────────────────────────────── */
+    .footer {
+      text-align:center; padding-top:18px; margin-top:24px;
+      border-top:1px solid var(--border);
+      font-size:11px; color:var(--muted);
+    }
+    .footer a { color:var(--blue); text-decoration:none; }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER — exact match to program health page ══════════ -->
+<div class="header">
+  <div>
+    <div class="prog-name">Organizational Priority Stack <span>· Kaseya 365</span></div>
+    <div class="prog-sub">20 competing programs · Revenue-first ranking · Feature Delivery · Reliability · Platform Investments</div>
+  </div>
+  <div class="header-right">
+    <span class="badge blue"><span class="dot"></span> Q2 FY26 Active</span>
+    <div class="meta">
+      Owner: Head of TPM<br>
+      Sponsor: VP Engineering &amp; VP Sales<br>
+      Updated: May 26, 2026<br>
+      Cadence: Quarterly review
+    </div>
+  </div>
+</div>
+
+<!-- ══ MISSION BANNER ═══════════════════════════════════════ -->
+<div class="mission">
+  <div class="mission-lbl">🧭 North Star — How This List Works</div>
+  <div class="mission-txt">
+    Every program is scored across 5 criteria and <strong style="color:white;">ranked by Revenue Impact</strong> — the primary decision variable for staffing and project prioritization.
+    Items at the same revenue tier are broken by Priority Score. Platform investments carry a
+    <strong style="color:white;">20% eng capacity floor</strong> regardless of rank — they enable future revenue even when their current score is lower.
+    This list is the single source of truth for what gets staffed, what gets deferred, and what ships first.
+  </div>
+</div>
+
+<!-- ══ SCORING CRITERIA ══════════════════════════════════════ -->
+<div class="sec">📐 Scoring Criteria &amp; Weights</div>
+<div class="crit-grid">
+  <div class="crit-card">
+    <div class="crit-wt">35%</div>
+    <div class="crit-lbl">💰 Revenue Impact</div>
+    <div class="crit-desc">Direct ARR contribution or revenue protected from churn — <strong style="color:white;">primary sort key</strong></div>
+    <div class="crit-bar"><div class="crit-fill" style="width:100%;background:var(--green);"></div></div>
+  </div>
+  <div class="crit-card">
+    <div class="crit-wt">25%</div>
+    <div class="crit-lbl">🧑‍💼 Customer Impact</div>
+    <div class="crit-desc">NPS, retention, time-to-value, and satisfaction outcomes</div>
+    <div class="crit-bar"><div class="crit-fill" style="width:71%;background:var(--blue);"></div></div>
+  </div>
+  <div class="crit-card">
+    <div class="crit-wt">20%</div>
+    <div class="crit-lbl">🎯 Strategic Alignment</div>
+    <div class="crit-desc">Fit with company OKRs, product direction, and platform vision</div>
+    <div class="crit-bar"><div class="crit-fill" style="width:57%;background:var(--purple);"></div></div>
+  </div>
+  <div class="crit-card">
+    <div class="crit-wt">15%</div>
+    <div class="crit-lbl">⚠️ Risk &amp; Urgency</div>
+    <div class="crit-desc">Compliance deadlines, SLA obligations, security posture, and time-sensitivity</div>
+    <div class="crit-bar"><div class="crit-fill" style="width:43%;background:var(--yellow);"></div></div>
+  </div>
+  <div class="crit-card">
+    <div class="crit-wt">5%</div>
+    <div class="crit-lbl">⚡ Effort Efficiency</div>
+    <div class="crit-desc">ROI per eng-quarter — lower effort earns a higher score</div>
+    <div class="crit-bar"><div class="crit-fill" style="width:14%;background:var(--cyan);"></div></div>
+  </div>
+</div>
+
+<!-- ══ TABLE ═════════════════════════════════════════════════ -->
+<div class="sec">📋 Priority-Ranked Program List — Sorted by Revenue Impact ↓</div>
+<div class="legend">
+  <span style="font-size:11px;color:var(--muted);font-weight:600;">Domain:</span>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--feat);"></div>Feature Delivery</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--rel);"></div>Reliability</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--plat);"></div>Platform Investment</div>
+  <span style="margin-left:auto;font-size:10px;color:var(--muted);">
+    Priority Score = (Rev×0.35) + (Cust×0.25) + (Strat×0.20) + (Risk×0.15) + (Eff×0.05) · Scale 1–5
+  </span>
+</div>
+
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr>
+      <th style="width:46px;">#</th>
+      <th>Program / Goal</th>
+      <th>Domain</th>
+      <th>Annual Input Goal</th>
+      <th class="center">Priority<br>Score</th>
+      <th class="right" style="background:rgba(34,197,94,.06);">Revenue Impact<br><span style="font-size:9px;font-weight:400;color:#22c55e;">← Ranking Decision</span></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- ── $12M ── -->
+    <tr>
+      <td><div class="rank gold">1</div></td>
+      <td><div class="prog-nm">Customer Onboarding Automation</div><div class="prog-desc">AI-guided activation · eliminate manual steps · reduce CS-assisted onboarding</div></td>
+      <td><span class="dom feat">Feature</span></td>
+      <td><div class="goal-kpi">Activate 5,000 new customers by Q4 2026</div><div class="goal-txt">Reduce time-to-first-value: 14 days → 3 days</div></td>
+      <td class="center"><div class="score-n hi">4.65</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$12M</div><div class="rev-type">New ARR via faster activation</div><div class="rev-bar"><div class="rev-fill" style="width:100%;"></div></div></td>
+    </tr>
+
+    <!-- ── $10M ── -->
+    <tr>
+      <td><div class="rank gold">2</div></td>
+      <td><div class="prog-nm">AI-Assisted Selling — Kaseya 365</div><div class="prog-desc">Next-best-action engine · automated account prep · unified signals at point of sale</div></td>
+      <td><span class="dom feat">Feature</span></td>
+      <td><div class="goal-kpi">Sell 10,000 Kaseya 365 licenses by Dec 31, 2026</div><div class="goal-txt">AI tool adoption to 80% of sellers · funnel conversion 12% → 20%</div></td>
+      <td class="center"><div class="score-n hi">4.50</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$10M</div><div class="rev-type">10,000 licenses × avg ACV</div><div class="rev-bar"><div class="rev-fill" style="width:83%;"></div></div></td>
+    </tr>
+
+    <!-- ── $8M ── -->
+    <tr>
+      <td><div class="rank silver">3</div></td>
+      <td><div class="prog-nm">Platform Availability — 99.9% SLA</div><div class="prog-desc">Reliability org model · incident SLO framework · on-call accountability structure</div></td>
+      <td><span class="dom rel">Reliability</span></td>
+      <td><div class="goal-kpi">Achieve &amp; maintain 99.9% uptime by Q3 2026</div><div class="goal-txt">Protect $200M ARR base · reduce customer-impacting incidents by 60%</div></td>
+      <td class="center"><div class="score-n hi">4.00</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$8M</div><div class="rev-type">ARR protected from churn</div><div class="rev-bar"><div class="rev-fill" style="width:67%;"></div></div></td>
+    </tr>
+
+    <!-- ── $7M ── -->
+    <tr>
+      <td><div class="rank silver">4</div></td>
+      <td><div class="prog-nm">Integrated Billing &amp; Usage Dashboard</div><div class="prog-desc">Unified licensing, usage visibility, and in-product upgrade prompts</div></td>
+      <td><span class="dom feat">Feature</span></td>
+      <td><div class="goal-kpi">Increase upsell conversion by 15% · Q3 2026</div><div class="goal-txt">Reduce billing-related support tickets by 40%</div></td>
+      <td class="center"><div class="score-n hi">4.00</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$7M</div><div class="rev-type">Upsell + billing friction reduction</div><div class="rev-bar"><div class="rev-fill" style="width:58%;"></div></div></td>
+    </tr>
+
+    <!-- ── $6M ── -->
+    <tr>
+      <td><div class="rank bronze">5</div></td>
+      <td><div class="prog-nm">Security Hardening — SOC2 Type II</div><div class="prog-desc">Compliance certification that unblocks enterprise pipeline and partner integrations</div></td>
+      <td><span class="dom rel">Reliability</span></td>
+      <td><div class="goal-kpi">SOC2 Type II certified by Q3 2026</div><div class="goal-txt">Unblock 50 enterprise deals currently in security review</div></td>
+      <td class="center"><div class="score-n mid">3.40</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$6M</div><div class="rev-type">Enterprise deal unblock</div><div class="rev-bar"><div class="rev-fill" style="width:50%;"></div></div></td>
+    </tr>
+
+    <tr>
+      <td><div class="rank bronze">6</div></td>
+      <td><div class="prog-nm">Partner &amp; Reseller Portal</div><div class="prog-desc">Self-service partner onboarding, deal registration, and co-sell enablement</div></td>
+      <td><span class="dom feat">Feature</span></td>
+      <td><div class="goal-kpi">Activate 200 reseller partners by Dec 2026</div><div class="goal-txt">Drive $6M indirect ARR through partner-sourced deals</div></td>
+      <td class="center"><div class="score-n mid">3.40</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$6M</div><div class="rev-type">Indirect channel ARR</div><div class="rev-bar"><div class="rev-fill" style="width:50%;"></div></div></td>
+    </tr>
+
+    <!-- ── $5M ── -->
+    <tr>
+      <td><div class="rank mid">7</div></td>
+      <td><div class="prog-nm">Self-Service Account Management</div><div class="prog-desc">Let customers manage seats, roles, and add-ons without CS touch</div></td>
+      <td><span class="dom feat">Feature</span></td>
+      <td><div class="goal-kpi">60% of account changes self-served by Q4 2026</div><div class="goal-txt">Reduce CS load by 30% · improve upgrade NPS by 20 points</div></td>
+      <td class="center"><div class="score-n hi">3.85</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$5M</div><div class="rev-type">CS cost savings + upgrade ARR</div><div class="rev-bar"><div class="rev-fill" style="width:42%;"></div></div></td>
+    </tr>
+
+    <tr>
+      <td><div class="rank mid">8</div></td>
+      <td><div class="prog-nm">Microservices Decomposition</div><div class="prog-desc">Break monolith into independently deployable services · scale per domain</div></td>
+      <td><span class="dom plat">Platform</span></td>
+      <td><div class="goal-kpi">3 core services decomposed · independent deploys by Q4 2026</div><div class="goal-txt">Enable 10× feature velocity over 3-year horizon</div></td>
+      <td class="center"><div class="score-n mid">2.95</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$5M</div><div class="rev-type">Future ARR · 3-year horizon</div><div class="rev-bar"><div class="rev-fill" style="width:42%;"></div></div></td>
+    </tr>
+
+    <!-- ── $4M ── -->
+    <tr>
+      <td><div class="rank mid">9</div></td>
+      <td><div class="prog-nm">Advanced Analytics &amp; Reporting</div><div class="prog-desc">Executive dashboards, custom report builder, and data export APIs</div></td>
+      <td><span class="dom feat">Feature</span></td>
+      <td><div class="goal-kpi">Launch premium analytics tier by Q3 2026</div><div class="goal-txt">Drive 20% of existing base to upgrade · reduce churn in data-heavy segments</div></td>
+      <td class="center"><div class="score-n mid">3.15</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$4M</div><div class="rev-type">Premium tier upsell + retention</div><div class="rev-bar"><div class="rev-fill" style="width:33%;"></div></div></td>
+    </tr>
+
+    <tr>
+      <td><div class="rank mid">10</div></td>
+      <td><div class="prog-nm">Database Scalability</div><div class="prog-desc">Sharding strategy · read replica fleet · sub-10ms query SLO at scale</div></td>
+      <td><span class="dom rel">Reliability</span></td>
+      <td><div class="goal-kpi">Support 10× current load · p95 &lt;10ms at 1M+ records</div><div class="goal-txt">Enable next growth phase without re-platforming in 18 months</div></td>
+      <td class="center"><div class="score-n mid">2.60</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$4M</div><div class="rev-type">Growth capacity unlock</div><div class="rev-bar"><div class="rev-fill" style="width:33%;"></div></div></td>
+    </tr>
+
+    <!-- ── $3M ── -->
+    <tr>
+      <td><div class="rank mid">11</div></td>
+      <td><div class="prog-nm">Data Pipeline Reliability</div><div class="prog-desc">ELT/ETL data quality · SLA on freshness · lineage and observability</div></td>
+      <td><span class="dom rel">Reliability</span></td>
+      <td><div class="goal-kpi">99.5% data freshness SLA by Q3 2026</div><div class="goal-txt">Reduce bad data incidents by 80% · support AI/ML feature delivery</div></td>
+      <td class="center"><div class="score-n mid">3.40</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">CS efficiency + decisions quality</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
+    </tr>
+
+    <tr>
+      <td><div class="rank mid">12</div></td>
+      <td><div class="prog-nm">Performance Optimization — P95 Latency</div><div class="prog-desc">Reduce p95 API response time · core product pages · mobile experience</div></td>
+      <td><span class="dom rel">Reliability</span></td>
+      <td><div class="goal-kpi">p95 latency: 800ms → 200ms across core flows</div><div class="goal-txt">Reduce performance-driven churn by 15% in high-usage segments</div></td>
+      <td class="center"><div class="score-n mid">3.25</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">Churn reduction from perf issues</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
+    </tr>
+
+    <tr>
+      <td><div class="rank mid">13</div></td>
+      <td><div class="prog-nm">Mobile App — Field Service Expansion</div><div class="prog-desc">Native iOS/Android for field technicians · offline mode · job dispatch</div></td>
+      <td><span class="dom feat">Feature</span></td>
+      <td><div class="goal-kpi">1,000 field technician MAU by Q4 2026</div><div class="goal-txt">Open field service segment · v1 iOS + Android by Q3 2026</div></td>
+      <td class="center"><div class="score-n mid">3.05</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">New field segment ARR</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
+    </tr>
+
+    <tr>
+      <td><div class="rank mid">14</div></td>
+      <td><div class="prog-nm">API Gateway &amp; Rate Limiting</div><div class="prog-desc">Unified API layer · versioning · developer access · third-party integrations</div></td>
+      <td><span class="dom plat">Platform</span></td>
+      <td><div class="goal-kpi">Launch public API v2 · onboard 100 integration partners</div><div class="goal-txt">Enable marketplace ecosystem by Q4 2026</div></td>
+      <td class="center"><div class="score-n mid">2.85</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">Ecosystem / marketplace enabler</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
+    </tr>
+
+    <tr>
+      <td><div class="rank mid">15</div></td>
+      <td><div class="prog-nm">Disaster Recovery &amp; BCP</div><div class="prog-desc">Multi-region failover · annual DR drill · RTO and RPO targets formalized</div></td>
+      <td><span class="dom rel">Reliability</span></td>
+      <td><div class="goal-kpi">RTO &lt;4h · RPO &lt;1h · DR drill pass rate 100%</div><div class="goal-txt">Full BCP playbook and runbook coverage by Q2 2026</div></td>
+      <td class="center"><div class="score-n lo">2.55</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">Catastrophic risk protection</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
+    </tr>
+
+    <tr>
+      <td><div class="rank mid">16</div></td>
+      <td><div class="prog-nm">Internal Developer Experience Platform</div><div class="prog-desc">Golden path tooling · self-service infra · eng onboarding &lt;1 day</div></td>
+      <td><span class="dom plat">Platform</span></td>
+      <td><div class="goal-kpi">Eng onboarding: 5 days → 1 day by Q4 2026</div><div class="goal-txt">Deploy frequency +50% · self-service infra for 80% of workloads</div></td>
+      <td class="center"><div class="score-n lo">2.10</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">Velocity value over 2-year horizon</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
+    </tr>
+
+    <!-- ── $2M ── -->
+    <tr>
+      <td><div class="rank low">17</div></td>
+      <td><div class="prog-nm">Incident Response Automation</div><div class="prog-desc">Auto-runbooks · PagerDuty workflows · MTTR reduction program</div></td>
+      <td><span class="dom rel">Reliability</span></td>
+      <td><div class="goal-kpi">MTTR: 2h → 45min · automate 60% of runbooks by Q3 2026</div><div class="goal-txt">Reduce on-call burden · SLA penalty avoidance</div></td>
+      <td class="center"><div class="score-n lo">2.85</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$2M</div><div class="rev-type">SLA penalty avoidance</div><div class="rev-bar"><div class="rev-fill" style="width:17%;"></div></div></td>
+    </tr>
+
+    <tr>
+      <td><div class="rank low">18</div></td>
+      <td><div class="prog-nm">Cloud Cost Optimization</div><div class="prog-desc">FinOps · right-sizing · reserved capacity planning · 30% infra cost target</div></td>
+      <td><span class="dom plat">Platform</span></td>
+      <td><div class="goal-kpi">Reduce infrastructure cost by 30% by Q3 2026</div><div class="goal-txt">$2M annual savings → direct EBITDA improvement</div></td>
+      <td class="center"><div class="score-n lo">2.75</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$2M</div><div class="rev-type">EBITDA improvement</div><div class="rev-bar"><div class="rev-fill" style="width:17%;"></div></div></td>
+    </tr>
+
+    <tr>
+      <td><div class="rank low">19</div></td>
+      <td><div class="prog-nm">Data Governance &amp; Observability</div><div class="prog-desc">Data catalog · lineage tracking · quality SLAs · GDPR / CCPA compliance</div></td>
+      <td><span class="dom plat">Platform</span></td>
+      <td><div class="goal-kpi">GDPR/CCPA compliance · data catalog for 500+ datasets by Q4 2026</div><div class="goal-txt">Data quality SLA for all AI/ML pipelines by Q3 2026</div></td>
+      <td class="center"><div class="score-n lo">2.60</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$2M</div><div class="rev-type">Compliance risk + data product quality</div><div class="rev-bar"><div class="rev-fill" style="width:17%;"></div></div></td>
+    </tr>
+
+    <!-- ── $1M ── -->
+    <tr>
+      <td><div class="rank low">20</div></td>
+      <td><div class="prog-nm">IAM Modernization</div><div class="prog-desc">SSO · RBAC v2 · SCIM provisioning · zero-trust access controls</div></td>
+      <td><span class="dom plat">Platform</span></td>
+      <td><div class="goal-kpi">SSO + SCIM for 100% enterprise accounts by Q4 2026</div><div class="goal-txt">Mandatory for enterprise tier compliance certifications</div></td>
+      <td class="center"><div class="score-n lo">2.40</div><div class="score-sub">/5.00</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$1M</div><div class="rev-type">Enterprise compliance requirement</div><div class="rev-bar"><div class="rev-fill" style="width:8%;"></div></div></td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════ -->
+<div class="footer">
+  Organizational Priority Stack · Kaseya 365 &nbsp;·&nbsp;
+  Owner: Head of TPM &nbsp;·&nbsp;
+  <a href="https://goyalsandeep2k.github.io/program-health-dashboard/" target="_blank">Program Health Dashboard ↗</a> &nbsp;·&nbsp;
+  <a href="https://github.com/goyalsandeep2k/program-health-dashboard" target="_blank">GitHub ↗</a> &nbsp;·&nbsp;
+  Built with <a href="https://goyalsandeep2k.github.io/#claude-skills" target="_blank">Program Health Skill</a>
+</div>
+
+</body>
+</html>
