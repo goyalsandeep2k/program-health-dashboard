@@ -18,46 +18,34 @@
       --red:      #EF4444;
       --cyan:     #06B6D4;
       --purple:   #A855F7;
-      --feat:     #3B82F6;
-      --rel:      #EF4444;
-      --plat:     #A855F7;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      padding: 28px 32px;
-      min-height: 100vh;
+      background: var(--bg); color: var(--text);
+      padding: 28px 32px; min-height: 100vh;
     }
 
-    /* ── HEADER (exact match to program health page) ── */
+    /* ── HEADER — exact match to program health page ── */
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 22px;
+      display:flex; justify-content:space-between; align-items:flex-start;
+      padding-bottom:20px; border-bottom:1px solid var(--border); margin-bottom:22px;
     }
-    .prog-name { font-size:24px; font-weight:800; color:white; letter-spacing:-0.3px; }
-    .prog-name span { color: var(--blue); }
+    .prog-name { font-size:24px; font-weight:800; color:white; letter-spacing:-.3px; }
+    .prog-name span { color:var(--blue); }
     .prog-sub  { font-size:13px; color:var(--muted); margin-top:5px; }
     .header-right { text-align:right; }
     .meta { font-size:12px; color:var(--muted); line-height:1.9; margin-top:8px; }
     .badge {
-      display:inline-flex; align-items:center; gap:6px;
-      padding:5px 13px; border-radius:20px;
-      font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase;
+      display:inline-flex; align-items:center; gap:6px; padding:5px 13px;
+      border-radius:20px; font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase;
     }
-    .badge.green  { background:rgba(34,197,94,.15);  color:var(--green);  border:1px solid rgba(34,197,94,.3); }
-    .badge.yellow { background:rgba(245,158,11,.15); color:var(--yellow); border:1px solid rgba(245,158,11,.3); }
-    .badge.blue   { background:rgba(59,130,246,.15); color:var(--blue);   border:1px solid rgba(59,130,246,.3); }
+    .badge.blue { background:rgba(59,130,246,.15); color:var(--blue); border:1px solid rgba(59,130,246,.3); }
     .dot { width:7px; height:7px; border-radius:50%; background:currentColor; }
 
-    /* ── MISSION BANNER (exact match) ──────────────── */
+    /* ── MISSION BANNER ─────────────────────────────── */
     .mission {
-      background: linear-gradient(135deg,#0D1E38,#0A1F14);
+      background:linear-gradient(135deg,#0D1E38,#0A1F14);
       border:1px solid var(--border); border-left:4px solid var(--blue);
       border-radius:10px; padding:16px 22px; margin-bottom:22px;
     }
@@ -72,28 +60,20 @@
     }
     .sec::after { content:''; flex:1; height:1px; background:var(--border); }
 
-    /* ── CRITERIA CARDS ─────────────────────────────── */
-    .crit-grid {
-      display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:22px;
+    /* ── REVENUE RULE BANNER ────────────────────────── */
+    .rev-rule {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px;
     }
-    .crit-card {
+    .rev-card {
       background:var(--surface); border:1px solid var(--border);
-      border-radius:10px; padding:14px 16px; position:relative; overflow:hidden;
+      border-radius:10px; padding:16px 18px; display:flex; gap:14px; align-items:flex-start;
     }
-    .crit-card::before { content:''; position:absolute; top:0;left:0;right:0; height:3px; }
-    .crit-card:nth-child(1)::before { background:var(--green); }
-    .crit-card:nth-child(2)::before { background:var(--blue); }
-    .crit-card:nth-child(3)::before { background:var(--purple); }
-    .crit-card:nth-child(4)::before { background:var(--yellow); }
-    .crit-card:nth-child(5)::before { background:var(--cyan); }
-    .crit-wt   { font-size:26px; font-weight:900; color:white; letter-spacing:-1px; }
-    .crit-lbl  { font-size:12px; font-weight:700; color:var(--text); margin:3px 0 2px; }
-    .crit-desc { font-size:10px; color:var(--muted); line-height:1.4; }
-    .crit-bar  { height:4px; background:var(--surface2); border-radius:2px; margin-top:8px; overflow:hidden; }
-    .crit-fill { height:100%; border-radius:2px; }
+    .rev-card-icon { font-size:26px; flex-shrink:0; }
+    .rev-card-title { font-size:13px; font-weight:700; color:white; margin-bottom:4px; }
+    .rev-card-desc  { font-size:11.5px; color:var(--muted); line-height:1.5; }
 
     /* ── LEGEND ─────────────────────────────────────── */
-    .legend { display:flex; gap:20px; align-items:center; margin-bottom:14px; }
+    .legend { display:flex; gap:20px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
     .leg-item { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted); }
     .leg-dot  { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
 
@@ -106,17 +86,17 @@
       letter-spacing:1px; text-transform:uppercase; color:var(--muted);
       border-bottom:2px solid var(--border); white-space:nowrap;
     }
-    th.right, td.right { text-align:right; }
     th.center, td.center { text-align:center; }
+    th.right,  td.right  { text-align:right; }
     tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
     tbody tr:hover { background:rgba(59,130,246,.05); }
-    td { padding:12px 14px; vertical-align:middle; }
+    td { padding:11px 14px; vertical-align:middle; }
 
     /* Rank badge */
     .rank {
       width:30px; height:30px; border-radius:50%;
       display:flex; align-items:center; justify-content:center;
-      font-size:12px; font-weight:800;
+      font-size:12px; font-weight:800; flex-shrink:0;
     }
     .rank.gold   { background:linear-gradient(135deg,#B8860B,#FFD700); color:#1A1200; }
     .rank.silver { background:linear-gradient(135deg,#6B7280,#9CA3AF); color:#0F172A; }
@@ -126,56 +106,55 @@
 
     /* Program cell */
     .prog-nm   { font-size:13px; font-weight:600; color:white; }
-    .prog-desc { font-size:11px; color:var(--muted); margin-top:2px; line-height:1.35; max-width:260px; }
+    .prog-desc { font-size:11px; color:var(--muted); margin-top:2px; line-height:1.35; }
 
     /* Domain badge */
     .dom {
-      font-size:10px; font-weight:700; padding:3px 9px; border-radius:12px;
-      white-space:nowrap; letter-spacing:.3px;
+      font-size:10px; font-weight:700; padding:3px 9px; border-radius:12px; white-space:nowrap;
     }
-    .dom.feat { background:rgba(59,130,246,.15);  color:var(--feat); border:1px solid rgba(59,130,246,.25); }
-    .dom.rel  { background:rgba(239,68,68,.15);   color:var(--rel);  border:1px solid rgba(239,68,68,.25); }
-    .dom.plat { background:rgba(168,85,247,.15);  color:var(--plat); border:1px solid rgba(168,85,247,.25); }
+    .dom.feat { background:rgba(59,130,246,.15);  color:#3B82F6; border:1px solid rgba(59,130,246,.25); }
+    .dom.rel  { background:rgba(239,68,68,.15);   color:#EF4444; border:1px solid rgba(239,68,68,.25); }
+    .dom.plat { background:rgba(168,85,247,.15);  color:#A855F7; border:1px solid rgba(168,85,247,.25); }
 
     /* Annual goal cell */
-    .goal-txt  { font-size:12px; color:#94A3B8; line-height:1.45; max-width:240px; }
-    .goal-kpi  { font-size:11px; font-weight:700; color:white; margin-bottom:3px; }
+    .goal-kpi  { font-size:11.5px; font-weight:700; color:white; margin-bottom:3px; }
+    .goal-txt  { font-size:11px; color:var(--muted); line-height:1.4; max-width:230px; }
 
-    /* Score cell */
-    .score-n { font-size:15px; font-weight:800; }
-    .score-n.hi  { color:var(--green); }
-    .score-n.mid { color:var(--yellow); }
-    .score-n.lo  { color:var(--muted); }
-    .score-sub { font-size:10px; color:var(--muted); }
-
-    /* ── REVENUE IMPACT COLUMN (primary ranking criterion) ── */
+    /* Revenue Impact — the ranking column */
     td.rev-cell {
       background:rgba(34,197,94,.04);
       border-left:2px solid rgba(34,197,94,.2);
     }
-    .rev-amt {
-      font-size:17px; font-weight:900; color:var(--green); letter-spacing:-.5px;
-    }
+    .rev-amt  { font-size:18px; font-weight:900; color:var(--green); letter-spacing:-.5px; }
     .rev-type { font-size:10.5px; color:var(--muted); margin-top:2px; line-height:1.3; }
     .rev-bar  { height:4px; background:var(--surface2); border-radius:2px; margin-top:7px; overflow:hidden; }
     .rev-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--green),var(--cyan)); }
 
+    /* DRI cell */
+    .dri-wrap { display:flex; align-items:center; gap:10px; }
+    .dri-avatar {
+      width:34px; height:34px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:11px; font-weight:800; flex-shrink:0;
+    }
+    .dri-name  { font-size:13px; font-weight:600; color:white; }
+    .dri-title { font-size:10.5px; color:var(--muted); margin-top:1px; line-height:1.3; max-width:160px; }
+
     /* ── FOOTER ─────────────────────────────────────── */
     .footer {
       text-align:center; padding-top:18px; margin-top:24px;
-      border-top:1px solid var(--border);
-      font-size:11px; color:var(--muted);
+      border-top:1px solid var(--border); font-size:11px; color:var(--muted);
     }
     .footer a { color:var(--blue); text-decoration:none; }
   </style>
 </head>
 <body>
 
-<!-- ══ HEADER — exact match to program health page ══════════ -->
+<!-- ══ HEADER ════════════════════════════════════════════════ -->
 <div class="header">
   <div>
     <div class="prog-name">Organizational Priority Stack <span>· Kaseya 365</span></div>
-    <div class="prog-sub">20 competing programs · Revenue-first ranking · Feature Delivery · Reliability · Platform Investments</div>
+    <div class="prog-sub">20 competing programs · Ranked by Revenue Impact · Feature Delivery · Reliability · Platform Investments</div>
   </div>
   <div class="header-right">
     <span class="badge blue"><span class="dot"></span> Q2 FY26 Active</span>
@@ -188,177 +167,112 @@
   </div>
 </div>
 
-<!-- ══ MISSION BANNER ═══════════════════════════════════════ -->
+<!-- ══ MISSION BANNER ════════════════════════════════════════ -->
 <div class="mission">
-  <div class="mission-lbl">🧭 North Star — How This List Works</div>
+  <div class="mission-lbl">🧭 North Star — How Programs Are Prioritized</div>
   <div class="mission-txt">
-    Every program is scored across 5 criteria and <strong style="color:white;">ranked by Revenue Impact</strong> — the primary decision variable for staffing and project prioritization.
-    Items at the same revenue tier are broken by Priority Score. Platform investments carry a
-    <strong style="color:white;">20% eng capacity floor</strong> regardless of rank — they enable future revenue even when their current score is lower.
-    This list is the single source of truth for what gets staffed, what gets deferred, and what ships first.
+    Programs are ranked by a single criterion: <strong style="color:white;">Annual Revenue Impact</strong> — either direct ARR generated, revenue protected from churn, or future ARR unlocked.
+    This list is the single source of truth for <strong style="color:white;">program staffing, project go/no-go decisions, and resource allocation</strong> across Feature Delivery, Reliability, and Platform domains.
+    Platform investments carry a <strong style="color:white;">20% eng capacity floor</strong> regardless of rank.
   </div>
 </div>
 
-<!-- ══ SCORING CRITERIA ══════════════════════════════════════ -->
-<div class="sec">📐 Scoring Criteria &amp; Weights</div>
-<div class="crit-grid">
-  <div class="crit-card">
-    <div class="crit-wt">35%</div>
-    <div class="crit-lbl">💰 Revenue Impact</div>
-    <div class="crit-desc">Direct ARR contribution or revenue protected from churn — <strong style="color:white;">primary sort key</strong></div>
-    <div class="crit-bar"><div class="crit-fill" style="width:100%;background:var(--green);"></div></div>
+<!-- ══ RANKING RULES ═════════════════════════════════════════ -->
+<div class="sec">💰 Revenue Ranking Rules</div>
+<div class="rev-rule">
+  <div class="rev-card">
+    <div class="rev-card-icon">📈</div>
+    <div>
+      <div class="rev-card-title">Direct ARR</div>
+      <div class="rev-card-desc">New revenue generated by the program — new customers acquired, licenses sold, or upgrades driven directly by the feature or initiative.</div>
+    </div>
   </div>
-  <div class="crit-card">
-    <div class="crit-wt">25%</div>
-    <div class="crit-lbl">🧑‍💼 Customer Impact</div>
-    <div class="crit-desc">NPS, retention, time-to-value, and satisfaction outcomes</div>
-    <div class="crit-bar"><div class="crit-fill" style="width:71%;background:var(--blue);"></div></div>
+  <div class="rev-card">
+    <div class="rev-card-icon">🛡️</div>
+    <div>
+      <div class="rev-card-title">ARR Protected</div>
+      <div class="rev-card-desc">Existing revenue saved from churn — reliability, security, and performance programs that prevent customer loss count at full ARR value.</div>
+    </div>
   </div>
-  <div class="crit-card">
-    <div class="crit-wt">20%</div>
-    <div class="crit-lbl">🎯 Strategic Alignment</div>
-    <div class="crit-desc">Fit with company OKRs, product direction, and platform vision</div>
-    <div class="crit-bar"><div class="crit-fill" style="width:57%;background:var(--purple);"></div></div>
-  </div>
-  <div class="crit-card">
-    <div class="crit-wt">15%</div>
-    <div class="crit-lbl">⚠️ Risk &amp; Urgency</div>
-    <div class="crit-desc">Compliance deadlines, SLA obligations, security posture, and time-sensitivity</div>
-    <div class="crit-bar"><div class="crit-fill" style="width:43%;background:var(--yellow);"></div></div>
-  </div>
-  <div class="crit-card">
-    <div class="crit-wt">5%</div>
-    <div class="crit-lbl">⚡ Effort Efficiency</div>
-    <div class="crit-desc">ROI per eng-quarter — lower effort earns a higher score</div>
-    <div class="crit-bar"><div class="crit-fill" style="width:14%;background:var(--cyan);"></div></div>
+  <div class="rev-card">
+    <div class="rev-card-icon">🔮</div>
+    <div>
+      <div class="rev-card-title">Future ARR Unlocked</div>
+      <div class="rev-card-desc">Platform and infrastructure programs scored on the ARR they enable over a 2–3 year horizon, discounted 50% to account for time-to-value lag.</div>
+    </div>
   </div>
 </div>
 
-<!-- ══ TABLE ═════════════════════════════════════════════════ -->
-<div class="sec">📋 Priority-Ranked Program List — Sorted by Revenue Impact ↓</div>
+<!-- ══ TABLE ══════════════════════════════════════════════════ -->
+<div class="sec">📋 Priority Stack — 1 → 20 · Sorted by Revenue Impact ↓</div>
 <div class="legend">
   <span style="font-size:11px;color:var(--muted);font-weight:600;">Domain:</span>
-  <div class="leg-item"><div class="leg-dot" style="background:var(--feat);"></div>Feature Delivery</div>
-  <div class="leg-item"><div class="leg-dot" style="background:var(--rel);"></div>Reliability</div>
-  <div class="leg-item"><div class="leg-dot" style="background:var(--plat);"></div>Platform Investment</div>
-  <span style="margin-left:auto;font-size:10px;color:var(--muted);">
-    Priority Score = (Rev×0.35) + (Cust×0.25) + (Strat×0.20) + (Risk×0.15) + (Eff×0.05) · Scale 1–5
-  </span>
+  <div class="leg-item"><div class="leg-dot" style="background:#3B82F6;"></div>Feature Delivery</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#EF4444;"></div>Reliability</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#A855F7;"></div>Platform Investment</div>
+  <span style="margin-left:auto;font-size:10px;color:var(--muted);">Ties broken by customer impact · Platform floor: 20% eng capacity</span>
 </div>
 
 <div class="tbl-wrap">
 <table>
   <thead>
     <tr>
-      <th style="width:46px;">#</th>
+      <th style="width:44px;">#</th>
       <th>Program / Goal</th>
       <th>Domain</th>
       <th>Annual Input Goal</th>
-      <th class="center">Priority<br>Score</th>
-      <th class="right" style="background:rgba(34,197,94,.06);">Revenue Impact<br><span style="font-size:9px;font-weight:400;color:#22c55e;">← Ranking Decision</span></th>
-      <th>DRI<br><span style="font-size:9px;font-weight:400;color:var(--muted);">Directly Responsible Individual</span></th>
+      <th class="right" style="background:rgba(34,197,94,.06);">
+        Revenue Impact
+        <div style="font-size:9px;font-weight:400;color:#22c55e;text-transform:none;letter-spacing:0;">Ranking criterion</div>
+      </th>
+      <th>DRI</th>
     </tr>
   </thead>
   <tbody>
 
-    <!-- ── $12M ── -->
     <tr>
       <td><div class="rank gold">1</div></td>
       <td><div class="prog-nm">Customer Onboarding Automation</div><div class="prog-desc">AI-guided activation · eliminate manual steps · reduce CS-assisted onboarding</div></td>
       <td><span class="dom feat">Feature</span></td>
-      <td><div class="goal-kpi">Activate 5,000 new customers by Q4 2026</div><div class="goal-txt">Reduce time-to-first-value: 14 days → 3 days</div></td>
-      <td class="center"><div class="score-n hi">4.65</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">Activate 5,000 new customers by Q4 2026</div><div class="goal-txt">Time-to-first-value: 14 days → 3 days</div></td>
       <td class="right rev-cell"><div class="rev-amt">$12M</div><div class="rev-type">New ARR via faster activation</div><div class="rev-bar"><div class="rev-fill" style="width:100%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#3B82F622;border:1px solid #3B82F644;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#3B82F6;flex-shrink:0;">SC</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Sarah Chen</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">VP Product — Growth</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.4);color:#3B82F6;">SC</div><div><div class="dri-name">Sarah Chen</div><div class="dri-title">VP Product — Growth</div></div></div></td>
     </tr>
 
-    <!-- ── $10M ── -->
     <tr>
       <td><div class="rank gold">2</div></td>
       <td><div class="prog-nm">AI-Assisted Selling — Kaseya 365</div><div class="prog-desc">Next-best-action engine · automated account prep · unified signals at point of sale</div></td>
       <td><span class="dom feat">Feature</span></td>
-      <td><div class="goal-kpi">Sell 10,000 Kaseya 365 licenses by Dec 31, 2026</div><div class="goal-txt">AI tool adoption to 80% of sellers · funnel conversion 12% → 20%</div></td>
-      <td class="center"><div class="score-n hi">4.50</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">Sell 10,000 Kaseya 365 licenses by Dec 31, 2026</div><div class="goal-txt">AI tool adoption 80% of sellers · funnel conversion 12% → 20%</div></td>
       <td class="right rev-cell"><div class="rev-amt">$10M</div><div class="rev-type">10,000 licenses × avg ACV</div><div class="rev-bar"><div class="rev-fill" style="width:83%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#F59E0B22;border:1px solid #F59E0B44;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#F59E0B;flex-shrink:0;">MW</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Marcus Williams</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Head of Sales Operations</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);color:#F59E0B;">MW</div><div><div class="dri-name">Marcus Williams</div><div class="dri-title">Head of Sales Operations</div></div></div></td>
     </tr>
 
-    <!-- ── $8M ── -->
     <tr>
       <td><div class="rank silver">3</div></td>
-      <td><div class="prog-nm">Platform Availability — 99.9% SLA</div><div class="prog-desc">Reliability org model · incident SLO framework · on-call accountability structure</div></td>
+      <td><div class="prog-nm">Platform Availability — 99.9% SLA</div><div class="prog-desc">Reliability org model · incident SLO framework · on-call accountability</div></td>
       <td><span class="dom rel">Reliability</span></td>
-      <td><div class="goal-kpi">Achieve &amp; maintain 99.9% uptime by Q3 2026</div><div class="goal-txt">Protect $200M ARR base · reduce customer-impacting incidents by 60%</div></td>
-      <td class="center"><div class="score-n hi">4.00</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">Achieve &amp; maintain 99.9% uptime by Q3 2026</div><div class="goal-txt">Protect $200M ARR base · cut customer-impacting incidents 60%</div></td>
       <td class="right rev-cell"><div class="rev-amt">$8M</div><div class="rev-type">ARR protected from churn</div><div class="rev-bar"><div class="rev-fill" style="width:67%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#22C55E22;border:1px solid #22C55E44;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#22C55E;flex-shrink:0;">PS</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Priya Sharma</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">VP Engineering — Platform</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);color:#22C55E;">PS</div><div><div class="dri-name">Priya Sharma</div><div class="dri-title">VP Engineering — Platform</div></div></div></td>
     </tr>
 
-    <!-- ── $7M ── -->
     <tr>
       <td><div class="rank silver">4</div></td>
       <td><div class="prog-nm">Integrated Billing &amp; Usage Dashboard</div><div class="prog-desc">Unified licensing, usage visibility, and in-product upgrade prompts</div></td>
       <td><span class="dom feat">Feature</span></td>
-      <td><div class="goal-kpi">Increase upsell conversion by 15% · Q3 2026</div><div class="goal-txt">Reduce billing-related support tickets by 40%</div></td>
-      <td class="center"><div class="score-n hi">4.00</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">Upsell conversion +15% · billing tickets −40% by Q3 2026</div><div class="goal-txt">In-product upgrade nudges · self-serve plan management</div></td>
       <td class="right rev-cell"><div class="rev-amt">$7M</div><div class="rev-type">Upsell + billing friction reduction</div><div class="rev-bar"><div class="rev-fill" style="width:58%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#A855F722;border:1px solid #A855F744;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#A855F7;flex-shrink:0;">JR</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">James Rodriguez</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Director, Product — Monetization</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(168,85,247,.2);border:1px solid rgba(168,85,247,.4);color:#A855F7;">JR</div><div><div class="dri-name">James Rodriguez</div><div class="dri-title">Director, Product — Monetization</div></div></div></td>
     </tr>
 
-    <!-- ── $6M ── -->
     <tr>
       <td><div class="rank bronze">5</div></td>
-      <td><div class="prog-nm">Security Hardening — SOC2 Type II</div><div class="prog-desc">Compliance certification that unblocks enterprise pipeline and partner integrations</div></td>
+      <td><div class="prog-nm">Security Hardening — SOC2 Type II</div><div class="prog-desc">Compliance certification unblocking enterprise pipeline &amp; partner integrations</div></td>
       <td><span class="dom rel">Reliability</span></td>
-      <td><div class="goal-kpi">SOC2 Type II certified by Q3 2026</div><div class="goal-txt">Unblock 50 enterprise deals currently in security review</div></td>
-      <td class="center"><div class="score-n mid">3.40</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">SOC2 Type II certified by Q3 2026</div><div class="goal-txt">Unblock 50 enterprise deals currently stuck in security review</div></td>
       <td class="right rev-cell"><div class="rev-amt">$6M</div><div class="rev-type">Enterprise deal unblock</div><div class="rev-bar"><div class="rev-fill" style="width:50%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#EF444422;border:1px solid #EF444444;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#EF4444;flex-shrink:0;">RK</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Rachel Kim</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">CISO</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);color:#EF4444;">RK</div><div><div class="dri-name">Rachel Kim</div><div class="dri-title">CISO</div></div></div></td>
     </tr>
 
     <tr>
@@ -366,192 +280,89 @@
       <td><div class="prog-nm">Partner &amp; Reseller Portal</div><div class="prog-desc">Self-service partner onboarding, deal registration, and co-sell enablement</div></td>
       <td><span class="dom feat">Feature</span></td>
       <td><div class="goal-kpi">Activate 200 reseller partners by Dec 2026</div><div class="goal-txt">Drive $6M indirect ARR through partner-sourced deals</div></td>
-      <td class="center"><div class="score-n mid">3.40</div><div class="score-sub">/5.00</div></td>
       <td class="right rev-cell"><div class="rev-amt">$6M</div><div class="rev-type">Indirect channel ARR</div><div class="rev-bar"><div class="rev-fill" style="width:50%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#06B6D422;border:1px solid #06B6D444;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#06B6D4;flex-shrink:0;">DP</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">David Park</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">VP Partnerships</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(6,182,212,.2);border:1px solid rgba(6,182,212,.4);color:#06B6D4;">DP</div><div><div class="dri-name">David Park</div><div class="dri-title">VP Partnerships</div></div></div></td>
     </tr>
 
-    <!-- ── $5M ── -->
     <tr>
       <td><div class="rank mid">7</div></td>
-      <td><div class="prog-nm">Self-Service Account Management</div><div class="prog-desc">Let customers manage seats, roles, and add-ons without CS touch</div></td>
+      <td><div class="prog-nm">Self-Service Account Management</div><div class="prog-desc">Customers manage seats, roles, and add-ons without CS intervention</div></td>
       <td><span class="dom feat">Feature</span></td>
-      <td><div class="goal-kpi">60% of account changes self-served by Q4 2026</div><div class="goal-txt">Reduce CS load by 30% · improve upgrade NPS by 20 points</div></td>
-      <td class="center"><div class="score-n hi">3.85</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">60% of account changes self-served by Q4 2026</div><div class="goal-txt">CS load −30% · upgrade NPS +20 points</div></td>
       <td class="right rev-cell"><div class="rev-amt">$5M</div><div class="rev-type">CS cost savings + upgrade ARR</div><div class="rev-bar"><div class="rev-fill" style="width:42%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#EC489922;border:1px solid #EC489944;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#EC4899;flex-shrink:0;">AP</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Aisha Patel</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Director, Product — Platform</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(236,72,153,.2);border:1px solid rgba(236,72,153,.4);color:#EC4899;">AP</div><div><div class="dri-name">Aisha Patel</div><div class="dri-title">Director, Product — Platform</div></div></div></td>
     </tr>
 
     <tr>
       <td><div class="rank mid">8</div></td>
-      <td><div class="prog-nm">Microservices Decomposition</div><div class="prog-desc">Break monolith into independently deployable services · scale per domain</div></td>
+      <td><div class="prog-nm">Microservices Decomposition</div><div class="prog-desc">Break monolith into independent services · enable per-domain scaling</div></td>
       <td><span class="dom plat">Platform</span></td>
       <td><div class="goal-kpi">3 core services decomposed · independent deploys by Q4 2026</div><div class="goal-txt">Enable 10× feature velocity over 3-year horizon</div></td>
-      <td class="center"><div class="score-n mid">2.95</div><div class="score-sub">/5.00</div></td>
       <td class="right rev-cell"><div class="rev-amt">$5M</div><div class="rev-type">Future ARR · 3-year horizon</div><div class="rev-bar"><div class="rev-fill" style="width:42%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#10B98122;border:1px solid #10B98144;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#10B981;flex-shrink:0;">RK</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Raj Krishnamurthy</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">VP Engineering — Core</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(16,185,129,.2);border:1px solid rgba(16,185,129,.4);color:#10B981;">RK</div><div><div class="dri-name">Raj Krishnamurthy</div><div class="dri-title">VP Engineering — Core</div></div></div></td>
     </tr>
 
-    <!-- ── $4M ── -->
     <tr>
       <td><div class="rank mid">9</div></td>
       <td><div class="prog-nm">Advanced Analytics &amp; Reporting</div><div class="prog-desc">Executive dashboards, custom report builder, and data export APIs</div></td>
       <td><span class="dom feat">Feature</span></td>
-      <td><div class="goal-kpi">Launch premium analytics tier by Q3 2026</div><div class="goal-txt">Drive 20% of existing base to upgrade · reduce churn in data-heavy segments</div></td>
-      <td class="center"><div class="score-n mid">3.15</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">Launch premium analytics tier by Q3 2026</div><div class="goal-txt">Drive 20% of base to upgrade · reduce churn in data-heavy segments</div></td>
       <td class="right rev-cell"><div class="rev-amt">$4M</div><div class="rev-type">Premium tier upsell + retention</div><div class="rev-bar"><div class="rev-fill" style="width:33%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#F9731622;border:1px solid #F9731644;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#F97316;flex-shrink:0;">MT</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Megan Torres</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Director, Product — Analytics</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(249,115,22,.2);border:1px solid rgba(249,115,22,.4);color:#F97316;">MT</div><div><div class="dri-name">Megan Torres</div><div class="dri-title">Director, Product — Analytics</div></div></div></td>
     </tr>
 
     <tr>
       <td><div class="rank mid">10</div></td>
       <td><div class="prog-nm">Database Scalability</div><div class="prog-desc">Sharding strategy · read replica fleet · sub-10ms query SLO at scale</div></td>
       <td><span class="dom rel">Reliability</span></td>
-      <td><div class="goal-kpi">Support 10× current load · p95 &lt;10ms at 1M+ records</div><div class="goal-txt">Enable next growth phase without re-platforming in 18 months</div></td>
-      <td class="center"><div class="score-n mid">2.60</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">Support 10× current load · p95 &lt;10ms at 1M+ records</div><div class="goal-txt">Enable next growth phase without re-platforming</div></td>
       <td class="right rev-cell"><div class="rev-amt">$4M</div><div class="rev-type">Growth capacity unlock</div><div class="rev-bar"><div class="rev-fill" style="width:33%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#6366F122;border:1px solid #6366F144;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#6366F1;flex-shrink:0;">AJ</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Alex Johnson</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Principal Engineer</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(99,102,241,.2);border:1px solid rgba(99,102,241,.4);color:#6366F1;">AJ</div><div><div class="dri-name">Alex Johnson</div><div class="dri-title">Principal Engineer</div></div></div></td>
     </tr>
 
-    <!-- ── $3M ── -->
     <tr>
       <td><div class="rank mid">11</div></td>
       <td><div class="prog-nm">Data Pipeline Reliability</div><div class="prog-desc">ELT/ETL data quality · SLA on freshness · lineage and observability</div></td>
       <td><span class="dom rel">Reliability</span></td>
-      <td><div class="goal-kpi">99.5% data freshness SLA by Q3 2026</div><div class="goal-txt">Reduce bad data incidents by 80% · support AI/ML feature delivery</div></td>
-      <td class="center"><div class="score-n mid">3.40</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">99.5% data freshness SLA by Q3 2026</div><div class="goal-txt">Bad data incidents −80% · unblock AI/ML feature delivery</div></td>
       <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">CS efficiency + decisions quality</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#14B8A622;border:1px solid #14B8A644;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#14B8A6;flex-shrink:0;">NG</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Nina Gupta</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Director, Data Engineering</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(20,184,166,.2);border:1px solid rgba(20,184,166,.4);color:#14B8A6;">NG</div><div><div class="dri-name">Nina Gupta</div><div class="dri-title">Director, Data Engineering</div></div></div></td>
     </tr>
 
     <tr>
       <td><div class="rank mid">12</div></td>
-      <td><div class="prog-nm">Performance Optimization — P95 Latency</div><div class="prog-desc">Reduce p95 API response time · core product pages · mobile experience</div></td>
+      <td><div class="prog-nm">Performance Optimization — P95 Latency</div><div class="prog-desc">Reduce p95 API response time · core product pages · mobile flows</div></td>
       <td><span class="dom rel">Reliability</span></td>
-      <td><div class="goal-kpi">p95 latency: 800ms → 200ms across core flows</div><div class="goal-txt">Reduce performance-driven churn by 15% in high-usage segments</div></td>
-      <td class="center"><div class="score-n mid">3.25</div><div class="score-sub">/5.00</div></td>
-      <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">Churn reduction from perf issues</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#8B5CF622;border:1px solid #8B5CF644;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#8B5CF6;flex-shrink:0;">TB</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Tyler Brooks</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Staff Engineer — Performance</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="goal-kpi">p95 latency: 800ms → 200ms across core flows</div><div class="goal-txt">Performance-driven churn −15% in high-usage segments</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">Churn reduction</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(139,92,246,.2);border:1px solid rgba(139,92,246,.4);color:#8B5CF6;">TB</div><div><div class="dri-name">Tyler Brooks</div><div class="dri-title">Staff Engineer — Performance</div></div></div></td>
     </tr>
 
     <tr>
       <td><div class="rank mid">13</div></td>
       <td><div class="prog-nm">Mobile App — Field Service Expansion</div><div class="prog-desc">Native iOS/Android for field technicians · offline mode · job dispatch</div></td>
       <td><span class="dom feat">Feature</span></td>
-      <td><div class="goal-kpi">1,000 field technician MAU by Q4 2026</div><div class="goal-txt">Open field service segment · v1 iOS + Android by Q3 2026</div></td>
-      <td class="center"><div class="score-n mid">3.05</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">1,000 field technician MAU by Q4 2026</div><div class="goal-txt">iOS + Android v1 launch by Q3 2026</div></td>
       <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">New field segment ARR</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#F59E0B22;border:1px solid #F59E0B44;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#F59E0B;flex-shrink:0;">LF</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Lena Fischer</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Director, Product — Mobile</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);color:#F59E0B;">LF</div><div><div class="dri-name">Lena Fischer</div><div class="dri-title">Director, Product — Mobile</div></div></div></td>
     </tr>
 
     <tr>
       <td><div class="rank mid">14</div></td>
-      <td><div class="prog-nm">API Gateway &amp; Rate Limiting</div><div class="prog-desc">Unified API layer · versioning · developer access · third-party integrations</div></td>
+      <td><div class="prog-nm">API Gateway &amp; Rate Limiting</div><div class="prog-desc">Unified API layer · versioning · third-party developer access</div></td>
       <td><span class="dom plat">Platform</span></td>
-      <td><div class="goal-kpi">Launch public API v2 · onboard 100 integration partners</div><div class="goal-txt">Enable marketplace ecosystem by Q4 2026</div></td>
-      <td class="center"><div class="score-n mid">2.85</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">Public API v2 · onboard 100 integration partners by Q4 2026</div><div class="goal-txt">Enable marketplace ecosystem</div></td>
       <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">Ecosystem / marketplace enabler</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#3B82F622;border:1px solid #3B82F644;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#3B82F6;flex-shrink:0;">OH</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Omar Hassan</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Staff Engineer — Platform</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.4);color:#3B82F6;">OH</div><div><div class="dri-name">Omar Hassan</div><div class="dri-title">Staff Engineer — Platform</div></div></div></td>
     </tr>
 
     <tr>
       <td><div class="rank mid">15</div></td>
-      <td><div class="prog-nm">Disaster Recovery &amp; BCP</div><div class="prog-desc">Multi-region failover · annual DR drill · RTO and RPO targets formalized</div></td>
+      <td><div class="prog-nm">Disaster Recovery &amp; BCP</div><div class="prog-desc">Multi-region failover · annual DR drill · RTO/RPO targets formalized</div></td>
       <td><span class="dom rel">Reliability</span></td>
-      <td><div class="goal-kpi">RTO &lt;4h · RPO &lt;1h · DR drill pass rate 100%</div><div class="goal-txt">Full BCP playbook and runbook coverage by Q2 2026</div></td>
-      <td class="center"><div class="score-n lo">2.55</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">RTO &lt;4h · RPO &lt;1h · DR drill pass rate 100%</div><div class="goal-txt">Full BCP playbook coverage by Q2 2026</div></td>
       <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">Catastrophic risk protection</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#EF444422;border:1px solid #EF444444;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#EF4444;flex-shrink:0;">KO</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Kevin O'Brien</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Director, SRE</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);color:#EF4444;">KO</div><div><div class="dri-name">Kevin O'Brien</div><div class="dri-title">Director, SRE</div></div></div></td>
     </tr>
 
     <tr>
@@ -559,96 +370,44 @@
       <td><div class="prog-nm">Internal Developer Experience Platform</div><div class="prog-desc">Golden path tooling · self-service infra · eng onboarding &lt;1 day</div></td>
       <td><span class="dom plat">Platform</span></td>
       <td><div class="goal-kpi">Eng onboarding: 5 days → 1 day by Q4 2026</div><div class="goal-txt">Deploy frequency +50% · self-service infra for 80% of workloads</div></td>
-      <td class="center"><div class="score-n lo">2.10</div><div class="score-sub">/5.00</div></td>
-      <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">Velocity value over 2-year horizon</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#22C55E22;border:1px solid #22C55E44;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#22C55E;flex-shrink:0;">YT</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Yuki Tanaka</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Director, Eng — Developer Experience</div>
-          </div>
-        </div>
-      </td>
+      <td class="right rev-cell"><div class="rev-amt">$3M</div><div class="rev-type">Velocity value · 2-year horizon</div><div class="rev-bar"><div class="rev-fill" style="width:25%;"></div></div></td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);color:#22C55E;">YT</div><div><div class="dri-name">Yuki Tanaka</div><div class="dri-title">Director, Eng — Developer Experience</div></div></div></td>
     </tr>
 
-    <!-- ── $2M ── -->
     <tr>
       <td><div class="rank low">17</div></td>
       <td><div class="prog-nm">Incident Response Automation</div><div class="prog-desc">Auto-runbooks · PagerDuty workflows · MTTR reduction program</div></td>
       <td><span class="dom rel">Reliability</span></td>
-      <td><div class="goal-kpi">MTTR: 2h → 45min · automate 60% of runbooks by Q3 2026</div><div class="goal-txt">Reduce on-call burden · SLA penalty avoidance</div></td>
-      <td class="center"><div class="score-n lo">2.85</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">MTTR: 2h → 45min · automate 60% of runbooks by Q3 2026</div><div class="goal-txt">On-call burden reduction · SLA penalty avoidance</div></td>
       <td class="right rev-cell"><div class="rev-amt">$2M</div><div class="rev-type">SLA penalty avoidance</div><div class="rev-bar"><div class="rev-fill" style="width:17%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#F9731622;border:1px solid #F9731644;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#F97316;flex-shrink:0;">CM</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Carlos Mendez</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Engineering Manager, SRE</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(249,115,22,.2);border:1px solid rgba(249,115,22,.4);color:#F97316;">CM</div><div><div class="dri-name">Carlos Mendez</div><div class="dri-title">Engineering Manager, SRE</div></div></div></td>
     </tr>
 
     <tr>
       <td><div class="rank low">18</div></td>
-      <td><div class="prog-nm">Cloud Cost Optimization</div><div class="prog-desc">FinOps · right-sizing · reserved capacity planning · 30% infra cost target</div></td>
+      <td><div class="prog-nm">Cloud Cost Optimization</div><div class="prog-desc">FinOps · right-sizing · reserved capacity planning</div></td>
       <td><span class="dom plat">Platform</span></td>
-      <td><div class="goal-kpi">Reduce infrastructure cost by 30% by Q3 2026</div><div class="goal-txt">$2M annual savings → direct EBITDA improvement</div></td>
-      <td class="center"><div class="score-n lo">2.75</div><div class="score-sub">/5.00</div></td>
+      <td><div class="goal-kpi">Infrastructure cost −30% by Q3 2026</div><div class="goal-txt">$2M annual savings → direct EBITDA improvement</div></td>
       <td class="right rev-cell"><div class="rev-amt">$2M</div><div class="rev-type">EBITDA improvement</div><div class="rev-bar"><div class="rev-fill" style="width:17%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#A855F722;border:1px solid #A855F744;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#A855F7;flex-shrink:0;">JW</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Jennifer Walsh</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Director, FinOps</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(168,85,247,.2);border:1px solid rgba(168,85,247,.4);color:#A855F7;">JW</div><div><div class="dri-name">Jennifer Walsh</div><div class="dri-title">Director, FinOps</div></div></div></td>
     </tr>
 
     <tr>
       <td><div class="rank low">19</div></td>
-      <td><div class="prog-nm">Data Governance &amp; Observability</div><div class="prog-desc">Data catalog · lineage tracking · quality SLAs · GDPR / CCPA compliance</div></td>
+      <td><div class="prog-nm">Data Governance &amp; Observability</div><div class="prog-desc">Data catalog · lineage tracking · GDPR / CCPA compliance</div></td>
       <td><span class="dom plat">Platform</span></td>
-      <td><div class="goal-kpi">GDPR/CCPA compliance · data catalog for 500+ datasets by Q4 2026</div><div class="goal-txt">Data quality SLA for all AI/ML pipelines by Q3 2026</div></td>
-      <td class="center"><div class="score-n lo">2.60</div><div class="score-sub">/5.00</div></td>
-      <td class="right rev-cell"><div class="rev-amt">$2M</div><div class="rev-type">Compliance risk + data product quality</div><div class="rev-bar"><div class="rev-fill" style="width:17%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#06B6D422;border:1px solid #06B6D444;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#06B6D4;flex-shrink:0;">RN</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Ravi Nair</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Director, Data Governance</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="goal-kpi">GDPR/CCPA compliance · catalog for 500+ datasets by Q4 2026</div><div class="goal-txt">Data quality SLA for all AI/ML pipelines by Q3 2026</div></td>
+      <td class="right rev-cell"><div class="rev-amt">$2M</div><div class="rev-type">Compliance risk + data quality</div><div class="rev-bar"><div class="rev-fill" style="width:17%;"></div></div></td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(6,182,212,.2);border:1px solid rgba(6,182,212,.4);color:#06B6D4;">RN</div><div><div class="dri-name">Ravi Nair</div><div class="dri-title">Director, Data Governance</div></div></div></td>
     </tr>
 
-    <!-- ── $1M ── -->
     <tr>
       <td><div class="rank low">20</div></td>
       <td><div class="prog-nm">IAM Modernization</div><div class="prog-desc">SSO · RBAC v2 · SCIM provisioning · zero-trust access controls</div></td>
       <td><span class="dom plat">Platform</span></td>
       <td><div class="goal-kpi">SSO + SCIM for 100% enterprise accounts by Q4 2026</div><div class="goal-txt">Mandatory for enterprise tier compliance certifications</div></td>
-      <td class="center"><div class="score-n lo">2.40</div><div class="score-sub">/5.00</div></td>
       <td class="right rev-cell"><div class="rev-amt">$1M</div><div class="rev-type">Enterprise compliance requirement</div><div class="rev-bar"><div class="rev-fill" style="width:8%;"></div></div></td>
-    
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:50%;background:#EC489922;border:1px solid #EC489944;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#EC4899;flex-shrink:0;">SM</div>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:white;">Sofia Martinez</div>
-            <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">Director, Security Engineering</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="dri-wrap"><div class="dri-avatar" style="background:rgba(236,72,153,.2);border:1px solid rgba(236,72,153,.4);color:#EC4899;">SM</div><div><div class="dri-name">Sofia Martinez</div><div class="dri-title">Director, Security Engineering</div></div></div></td>
     </tr>
 
   </tbody>
@@ -660,8 +419,7 @@
   Organizational Priority Stack · Kaseya 365 &nbsp;·&nbsp;
   Owner: Head of TPM &nbsp;·&nbsp;
   <a href="https://goyalsandeep2k.github.io/program-health-dashboard/" target="_blank">Program Health Dashboard ↗</a> &nbsp;·&nbsp;
-  <a href="https://github.com/goyalsandeep2k/program-health-dashboard" target="_blank">GitHub ↗</a> &nbsp;·&nbsp;
-  Built with <a href="https://goyalsandeep2k.github.io/#claude-skills" target="_blank">Program Health Skill</a>
+  <a href="https://github.com/goyalsandeep2k/program-health-dashboard" target="_blank">GitHub ↗</a>
 </div>
 
 </body>
