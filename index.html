@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Program Health Dashboard — Kaseya Sales Transformation</title>
+  <style>
+    :root {
+      --bg:       #080E1B;
+      --surface:  #0F172A;
+      --surface2: #1E293B;
+      --border:   #1E2D45;
+      --text:     #E2E8F0;
+      --muted:    #64748B;
+      --blue:     #3B82F6;
+      --green:    #22C55E;
+      --yellow:   #F59E0B;
+      --red:      #EF4444;
+      --cyan:     #06B6D4;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 28px 32px;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ─────────────────────────────────── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 22px;
+    }
+    .prog-name  { font-size:24px; font-weight:800; color:white; letter-spacing:-0.3px; }
+    .prog-name span { color: var(--blue); }
+    .prog-sub   { font-size:13px; color:var(--muted); margin-top:5px; }
+    .header-right { text-align:right; }
+    .meta { font-size:12px; color:var(--muted); line-height:1.9; margin-top:8px; }
+
+    /* ── STATUS BADGE ───────────────────────────── */
+    .badge {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:5px 13px; border-radius:20px;
+      font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase;
+    }
+    .badge.green  { background:rgba(34,197,94,.15);  color:var(--green);  border:1px solid rgba(34,197,94,.3); }
+    .badge.yellow { background:rgba(245,158,11,.15); color:var(--yellow); border:1px solid rgba(245,158,11,.3); }
+    .badge.red    { background:rgba(239,68,68,.15);  color:var(--red);    border:1px solid rgba(239,68,68,.3); }
+    .dot { width:7px; height:7px; border-radius:50%; background:currentColor; }
+
+    /* ── MISSION ────────────────────────────────── */
+    .mission {
+      background: linear-gradient(135deg,#0D1E38,#0A1F14);
+      border:1px solid var(--border); border-left:4px solid var(--blue);
+      border-radius:10px; padding:16px 22px; margin-bottom:22px;
+    }
+    .mission-lbl { font-size:10px; font-weight:700; letter-spacing:1.5px; color:var(--blue); text-transform:uppercase; margin-bottom:6px; }
+    .mission-txt { font-size:13.5px; color:#CBD5E1; line-height:1.65; }
+
+    /* ── SECTION TITLE ──────────────────────────── */
+    .sec {
+      font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase;
+      color:var(--muted); margin-bottom:14px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .sec::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* ── LAYOUT HELPERS ─────────────────────────── */
+    .row-2  { display:grid; grid-template-columns:270px 1fr; gap:20px; margin-bottom:22px; }
+    .row-3  { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:22px; }
+    .row-4  { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .row-risk { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:22px; }
+
+    /* ── LAGGING INDICATOR ──────────────────────── */
+    .kpi-card {
+      background:linear-gradient(145deg,#0B1A2E,#0D2040);
+      border:1px solid #1A3A6B; border-radius:14px;
+      padding:22px 16px; text-align:center; position:relative; overflow:hidden;
+    }
+    .kpi-card::before { content:''; position:absolute; top:0;left:0;right:0; height:3px; background:linear-gradient(90deg,var(--blue),var(--cyan)); }
+    .kpi-lbl { font-size:10px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:var(--cyan); margin-bottom:10px; }
+    .kpi-num { font-size:40px; font-weight:900; color:white; letter-spacing:-1px; line-height:1; }
+    .kpi-tgt { font-size:12px; color:var(--muted); margin-top:4px; }
+    .kpi-tgt strong { color:var(--text); }
+    .ring-wrap { position:relative; width:100px; height:100px; margin:14px auto; }
+    .ring-wrap svg { transform:rotate(-90deg); }
+    .ring-bg   { fill:none; stroke:#1E3A5F; stroke-width:10; }
+    .ring-fill { fill:none; stroke:url(#rg); stroke-width:10; stroke-linecap:round; transition:stroke-dashoffset 1.2s ease; }
+    .ring-num  { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:17px; font-weight:800; color:var(--cyan); }
+
+    /* ── LEADING METRIC CARDS ───────────────────── */
+    .metric {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:10px; padding:15px; position:relative; overflow:hidden;
+    }
+    .metric::after { content:''; position:absolute; bottom:0;left:0;right:0; height:3px; }
+    .metric.green::after  { background:var(--green); }
+    .metric.yellow::after { background:var(--yellow); }
+    .metric.red::after    { background:var(--red); }
+    .metric.blue::after   { background:var(--blue); }
+    .metric-hd { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+    .metric-nm { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+    .metric-ico { font-size:17px; }
+    .metric-val { font-size:26px; font-weight:800; color:white; letter-spacing:-.5px; }
+    .metric-val small { font-size:14px; color:var(--muted); font-weight:400; }
+    .metric-tgt { font-size:11px; color:var(--muted); margin-top:1px; }
+    .metric-tgt strong { color:var(--text); }
+    .bar { height:5px; background:var(--surface2); border-radius:3px; margin-top:9px; overflow:hidden; }
+    .bar-fill { height:100%; border-radius:3px; }
+    .trend { font-size:10px; margin-top:6px; }
+    .trend.up   { color:var(--green); }
+    .trend.dn-g { color:var(--green); }
+    .trend.dn-b { color:var(--red); }
+    .trend.flat { color:var(--yellow); }
+
+    /* ── TIMELINE ───────────────────────────────── */
+    .tl { display:flex; position:relative; margin-bottom:22px; }
+    .tl::before { content:''; position:absolute; top:13px; left:40px; right:40px; height:2px; background:var(--border); z-index:0; }
+    .tl-item { flex:1; text-align:center; position:relative; z-index:1; }
+    .tl-dot { width:13px; height:13px; border-radius:50%; margin:0 auto 7px; border:2px solid var(--border); }
+    .tl-dot.done   { background:var(--green); border-color:var(--green); }
+    .tl-dot.active { background:var(--yellow); border-color:var(--yellow); box-shadow:0 0 10px rgba(245,158,11,.5); }
+    .tl-dot.future { background:var(--surface); border-color:var(--muted); }
+    .tl-label { font-size:10px; color:var(--muted); font-weight:600; }
+    .tl-date  { font-size:9px; color:#475569; margin-top:2px; }
+    .tl-st    { font-size:9px; font-weight:700; margin-top:3px; }
+    .tl-st.done   { color:var(--green); }
+    .tl-st.active { color:var(--yellow); }
+    .tl-st.future { color:#475569; }
+
+    /* ── SUB-GOAL CARDS ─────────────────────────── */
+    .sg-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:12px; padding:18px; position:relative; overflow:hidden;
+    }
+    .sg-card::before { content:''; position:absolute; top:0;left:0;right:0; height:3px; }
+    .sg-card.green::before  { background:var(--green); }
+    .sg-card.yellow::before { background:var(--yellow); }
+    .sg-card.red::before    { background:var(--red); }
+    .sg-hd { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .sg-ico { font-size:18px; }
+    .sg-nm  { font-size:14px; font-weight:700; color:white; margin-top:2px; }
+    .sg-desc { font-size:11.5px; color:var(--muted); line-height:1.55; margin-bottom:12px; }
+    .ms-list { list-style:none; }
+    .ms-item {
+      display:flex; align-items:center; gap:9px;
+      padding:7px 0; border-bottom:1px solid var(--border);
+      font-size:11.5px; color:#94A3B8;
+    }
+    .ms-item:last-child { border-bottom:none; }
+    .ms-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    .ms-dot.done      { background:var(--green); }
+    .ms-dot.progress  { background:var(--yellow); }
+    .ms-dot.planned   { background:var(--muted); }
+    .ms-dot.blocked   { background:var(--red); }
+    .ms-tag { margin-left:auto; font-size:9px; font-weight:700; padding:2px 7px; border-radius:8px; white-space:nowrap; }
+    .ms-tag.done     { background:rgba(34,197,94,.15);  color:var(--green); }
+    .ms-tag.progress { background:rgba(245,158,11,.15); color:var(--yellow); }
+    .ms-tag.planned  { background:rgba(100,116,139,.15);color:var(--muted); }
+    .ms-tag.blocked  { background:rgba(239,68,68,.15);  color:var(--red); }
+
+    /* ── RISKS ──────────────────────────────────── */
+    .risk-item {
+      display:flex; gap:10px; align-items:flex-start;
+      padding:11px 13px; border-radius:8px; background:var(--surface2); margin-bottom:9px;
+    }
+    .risk-lv {
+      font-size:9px; font-weight:800; letter-spacing:.8px; padding:3px 7px;
+      border-radius:4px; text-transform:uppercase; flex-shrink:0; margin-top:1px;
+    }
+    .risk-lv.high   { background:rgba(239,68,68,.2);  color:var(--red); }
+    .risk-lv.med    { background:rgba(245,158,11,.2); color:var(--yellow); }
+    .risk-lv.urgent { background:rgba(239,68,68,.25); color:#FF6B6B; }
+    .risk-txt { font-size:11.5px; color:#94A3B8; line-height:1.5; }
+    .risk-txt strong { color:white; }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    .footer {
+      text-align:center; padding-top:18px;
+      border-top:1px solid var(--border);
+      font-size:11px; color:var(--muted);
+    }
+    .footer a { color:var(--blue); text-decoration:none; }
+    .footer a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════ -->
+<div class="header">
+  <div>
+    <div class="prog-name">Sales Transformation Program <span>· Kaseya 365</span></div>
+    <div class="prog-sub">Enabling sellers with AI · Improving lead quality · Driving 10,000 license sales by Dec 2026</div>
+  </div>
+  <div class="header-right">
+    <span class="badge yellow"><span class="dot"></span> At Risk</span>
+    <div class="meta">
+      TPM: Sandeep Goyal<br>
+      Sponsor: VP of Sales<br>
+      Updated: May 26, 2026<br>
+      Q2 FY26 · Week 18 of 26
+    </div>
+  </div>
+</div>
+
+<!-- ══ MISSION ═════════════════════════════════════════════════ -->
+<div class="mission">
+  <div class="mission-lbl">🎯 Program Mission</div>
+  <div class="mission-txt">
+    Transform Kaseya's fragmented sales motion into an AI-powered, data-driven engine. Equip every seller with intelligent tools, high-quality leads, and streamlined workflows — enabling the team to close
+    <strong style="color:white;">10,000 Kaseya 365 licenses by Dec 31, 2026</strong> while reducing average customer interaction time and increasing top-of-funnel conversion rate.
+  </div>
+</div>
+
+<!-- ══ OUTCOME TRACKING ════════════════════════════════════════ -->
+<div class="sec">📊 Outcome Tracking</div>
+<div class="row-2">
+
+  <!-- Lagging Indicator -->
+  <div class="kpi-card">
+    <svg width="0" height="0" style="position:absolute">
+      <defs>
+        <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#3B82F6"/>
+          <stop offset="100%" stop-color="#06B6D4"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="kpi-lbl">🏆 Lagging Indicator</div>
+    <div style="font-size:26px;margin-bottom:4px;">🪪</div>
+    <div class="kpi-num" id="kpiNum">3,240</div>
+    <div class="kpi-tgt">of <strong>10,000</strong> Kaseya 365 Licenses</div>
+    <div class="ring-wrap">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="42"/>
+        <circle class="ring-fill" cx="50" cy="50" r="42" id="ring"
+          stroke-dasharray="263.89" stroke-dashoffset="263.89"/>
+      </svg>
+      <div class="ring-num">32%</div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);">Target deadline: Dec 31, 2026</div>
+    <div style="font-size:11px;color:var(--yellow);margin-top:6px;font-weight:600;">⚠️ Pacing 8% below trajectory</div>
+  </div>
+
+  <!-- Leading Indicators -->
+  <div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">⚡ Leading Indicators — Success Measures</div>
+    <div class="row-4">
+
+      <div class="metric yellow">
+        <div class="metric-hd">
+          <div class="metric-nm">Lead Quality Score</div>
+          <div class="metric-ico">🎯</div>
+        </div>
+        <div class="metric-val">68<small>/100</small></div>
+        <div class="metric-tgt">Target: <strong>85+</strong></div>
+        <div class="bar"><div class="bar-fill" style="width:68%;background:var(--yellow);"></div></div>
+        <div class="trend flat">→ Flat — MQL→SQL conversion slow</div>
+      </div>
+
+      <div class="metric red">
+        <div class="metric-hd">
+          <div class="metric-nm">Top-of-Funnel Conversion</div>
+          <div class="metric-ico">📉</div>
+        </div>
+        <div class="metric-val">12<small>%</small></div>
+        <div class="metric-tgt">Target: <strong>20%</strong></div>
+        <div class="bar"><div class="bar-fill" style="width:60%;background:var(--red);"></div></div>
+        <div class="trend dn-b">↓ -2% MoM · ICP not finalized</div>
+      </div>
+
+      <div class="metric blue">
+        <div class="metric-hd">
+          <div class="metric-nm">AI Tool Adoption</div>
+          <div class="metric-ico">🤖</div>
+        </div>
+        <div class="metric-val">45<small>%</small></div>
+        <div class="metric-tgt">Target: <strong>80%</strong> sellers</div>
+        <div class="bar"><div class="bar-fill" style="width:56%;background:var(--blue);"></div></div>
+        <div class="trend up">↑ +12% MoM · NBA rollout live</div>
+      </div>
+
+      <div class="metric green">
+        <div class="metric-hd">
+          <div class="metric-nm">Avg Interaction Time</div>
+          <div class="metric-ico">⏱️</div>
+        </div>
+        <div class="metric-val">28<small>min</small></div>
+        <div class="metric-tgt">Target: <strong>&lt;20 min</strong></div>
+        <div class="bar"><div class="bar-fill" style="width:71%;background:var(--green);"></div></div>
+        <div class="trend dn-g">↓ -4min MoM · AI prep reducing ramp</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROGRAM TIMELINE ════════════════════════════════════════ -->
+<div class="sec">📅 Program Timeline</div>
+<div class="tl">
+  <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label">Kickoff</div><div class="tl-date">Jan 2026</div><div class="tl-st done">✓ Done</div></div>
+  <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label">Discovery & ICP</div><div class="tl-date">Feb 2026</div><div class="tl-st done">✓ Done</div></div>
+  <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label">AI Pilot · 20 Sellers</div><div class="tl-date">Mar 2026</div><div class="tl-st done">✓ Done</div></div>
+  <div class="tl-item"><div class="tl-dot active"></div><div class="tl-label">Full AI Rollout</div><div class="tl-date">May–Jun 2026</div><div class="tl-st active">▶ In Progress</div></div>
+  <div class="tl-item"><div class="tl-dot future"></div><div class="tl-label">Lead Scoring V2</div><div class="tl-date">Jul 2026</div><div class="tl-st future">Planned</div></div>
+  <div class="tl-item"><div class="tl-dot future"></div><div class="tl-label">10K License Goal</div><div class="tl-date">Dec 2026</div><div class="tl-st future">🎯 Goal</div></div>
+</div>
+
+<!-- ══ SUB-GOAL HEALTH ═════════════════════════════════════════ -->
+<div class="sec">🏗 Sub-Goal Health</div>
+<div class="row-3">
+
+  <!-- Lead Management -->
+  <div class="sg-card yellow">
+    <div class="sg-hd">
+      <div><div class="sg-ico">🎯</div><div class="sg-nm">Lead Management</div></div>
+      <span class="badge yellow"><span class="dot"></span> At Risk</span>
+    </div>
+    <div class="sg-desc">Unify lead sourcing, scoring, and routing so every seller receives high-quality, actionable leads with full customer context at point of engagement.</div>
+    <ul class="ms-list">
+      <li class="ms-item"><span class="ms-dot done"></span>CRM data quality cleanup<span class="ms-tag done">Done</span></li>
+      <li class="ms-item"><span class="ms-dot progress"></span>Unified lead scoring model v1<span class="ms-tag progress">In Progress</span></li>
+      <li class="ms-item"><span class="ms-dot blocked"></span>ICP definition finalized<span class="ms-tag blocked">Blocked</span></li>
+      <li class="ms-item"><span class="ms-dot planned"></span>Automated lead routing<span class="ms-tag planned">Planned</span></li>
+    </ul>
+  </div>
+
+  <!-- Seller Experience -->
+  <div class="sg-card green">
+    <div class="sg-hd">
+      <div><div class="sg-ico">🧑‍💼</div><div class="sg-nm">Seller Experience</div></div>
+      <span class="badge green"><span class="dot"></span> On Track</span>
+    </div>
+    <div class="sg-desc">Redesign the end-to-end seller workflow — modernized playbooks, faster onboarding, and structured coaching to reduce ramp time and improve win rates.</div>
+    <ul class="ms-list">
+      <li class="ms-item"><span class="ms-dot done"></span>Sales playbook redesign v2<span class="ms-tag done">Done</span></li>
+      <li class="ms-item"><span class="ms-dot done"></span>Onboarding program refresh<span class="ms-tag done">Done</span></li>
+      <li class="ms-item"><span class="ms-dot progress"></span>Performance coaching framework<span class="ms-tag progress">In Progress</span></li>
+      <li class="ms-item"><span class="ms-dot planned"></span>Seller NPS baseline<span class="ms-tag planned">Planned</span></li>
+    </ul>
+  </div>
+
+  <!-- AI for Sales -->
+  <div class="sg-card red">
+    <div class="sg-hd">
+      <div><div class="sg-ico">🤖</div><div class="sg-nm">AI for Sales</div></div>
+      <span class="badge red"><span class="dot"></span> Off Track</span>
+    </div>
+    <div class="sg-desc">Embed AI across the full sales motion — next-best-action prompts, automated call summaries, and predictive churn signals to accelerate deal velocity.</div>
+    <ul class="ms-list">
+      <li class="ms-item"><span class="ms-dot done"></span>AI call summarization (pilot)<span class="ms-tag done">Done</span></li>
+      <li class="ms-item"><span class="ms-dot progress"></span>Next-best-action engine v1<span class="ms-tag progress">In Progress</span></li>
+      <li class="ms-item"><span class="ms-dot blocked"></span>Predictive churn alert model<span class="ms-tag blocked">Blocked</span></li>
+      <li class="ms-item"><span class="ms-dot planned"></span>Full seller AI rollout (80%)<span class="ms-tag planned">Planned</span></li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ══ RISKS & DECISIONS ═══════════════════════════════════════ -->
+<div class="row-risk">
+  <div>
+    <div class="sec">⚠️ Risks &amp; Blockers</div>
+    <div class="risk-item">
+      <span class="risk-lv high">HIGH</span>
+      <div class="risk-txt"><strong>ICP Definition Not Finalized</strong> — Blocks lead scoring model and funnel targeting. Product and Sales not aligned. Owner: VP Sales. ETA: Jun 15.</div>
+    </div>
+    <div class="risk-item">
+      <span class="risk-lv high">HIGH</span>
+      <div class="risk-txt"><strong>AI Model Data Access Blocked</strong> — Predictive churn requires CRM + usage data. Legal/Privacy review pending 6 weeks. Owner: Data Engineering.</div>
+    </div>
+    <div class="risk-item">
+      <span class="risk-lv med">MED</span>
+      <div class="risk-txt"><strong>Seller Adoption Resistance</strong> — 22% of sellers not using AI prep tools. Root cause: training gap + workflow friction. Mitigation: enablement sprint Jun.</div>
+    </div>
+  </div>
+  <div>
+    <div class="sec">✅ Decisions Needed</div>
+    <div class="risk-item">
+      <span class="risk-lv urgent">URGENT</span>
+      <div class="risk-txt"><strong>Approve ICP v2 Definition</strong> — Unblocks lead scoring and funnel targeting. Owner: VP Sales + CPO. Deadline: Jun 10, 2026.</div>
+    </div>
+    <div class="risk-item">
+      <span class="risk-lv med">MED</span>
+      <div class="risk-txt"><strong>AI Tool Vendor Selection</strong> — Two finalists for next-best-action engine (Gong vs. internal build). TPM recommends Gong for speed. Exec decision needed Jun 20.</div>
+    </div>
+    <div class="risk-item">
+      <span class="risk-lv med">MED</span>
+      <div class="risk-txt"><strong>Q3 Capacity Plan</strong> — 3 engineers re-allocated. Need headcount backfill or scope reduction to hold July milestones. Owner: Eng Director.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════ -->
+<div class="footer">
+  Program Health Dashboard · Sales Transformation · Kaseya 365 &nbsp;·&nbsp;
+  TPM: Sandeep Goyal &nbsp;·&nbsp;
+  <a href="https://github.com/goyalsandeep2k/program-health-dashboard" target="_blank">GitHub ↗</a> &nbsp;·&nbsp;
+  Built with <a href="https://goyalsandeep2k.github.io/#claude-skills" target="_blank">Program Health Skill</a>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    const ring = document.getElementById('ring');
+    if (ring) {
+      const c = 2 * Math.PI * 42; // 263.89
+      setTimeout(() => { ring.style.strokeDashoffset = c * (1 - 0.324); }, 300);
+    }
+  });
+</script>
+</body>
+</html>
