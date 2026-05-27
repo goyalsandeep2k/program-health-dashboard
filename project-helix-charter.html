@@ -68,19 +68,48 @@
     }
     .sec::after { content:''; flex:1; height:1px; background:var(--border); }
 
-    /* ── PILLARS GRID ────────────────────────────────── */
-    .pillars { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:28px; }
-    .pillar {
+    /* ── PILLARS — matches slide 55 layout ──────────────
+       AI FOR SALES = horizontal top banner
+       3 vertical columns in middle (Lead Mgmt · Seller Exp · Deal & Order)
+       FOUNDATIONS = horizontal bottom banner
+    ──────────────────────────────────────────────────── */
+    .pillar-layout { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+
+    /* Horizontal banner pillars */
+    .pillar-horiz {
+      background:var(--surface); border:1px solid var(--border); border-radius:10px;
+      padding:14px 20px; position:relative; overflow:hidden;
+    }
+    .pillar-horiz::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+    .pillar-horiz.p-ai::before   { background:var(--yellow); }
+    .pillar-horiz.p-fnd::before  { background:var(--teal); }
+    .pillar-horiz-hd { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+    .pillar-horiz-title { font-size:13px; font-weight:800; color:white; text-transform:uppercase; letter-spacing:.4px; }
+    .pillar-horiz-sub   { font-size:11.5px; color:var(--muted); margin-left:auto; }
+    .pillar-horiz-tag { font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; letter-spacing:.6px; text-transform:uppercase; }
+    .pillar-horiz-tag.ai  { background:rgba(245,158,11,.15); color:var(--yellow); border:1px solid rgba(245,158,11,.3); }
+    .pillar-horiz-tag.fnd { background:rgba(20,184,166,.15);  color:var(--teal);   border:1px solid rgba(20,184,166,.3); }
+    .horiz-items { display:flex; flex-wrap:wrap; gap:8px; }
+    .horiz-chip {
+      font-size:11px; padding:5px 12px; border-radius:8px; color:#CBD5E1;
+      background:var(--surface2); border:1px solid var(--border);
+    }
+    .horiz-chip.ai-chip  { border-color:rgba(245,158,11,.2); background:rgba(245,158,11,.05); }
+    .horiz-chip.fnd-chip { border-color:rgba(20,184,166,.2);  background:rgba(20,184,166,.04); }
+
+    /* Vertical 3-column pillars */
+    .pillar-verticals { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .pillar-vert {
       background:var(--surface); border:1px solid var(--border);
       border-radius:10px; padding:16px 14px; display:flex; flex-direction:column; gap:10px;
       position:relative; overflow:hidden;
     }
-    .pillar::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
-    .pillar.p1::before { background:var(--blue); }
-    .pillar.p2::before { background:var(--cyan); }
-    .pillar.p3::before { background:var(--purple); }
-    .pillar.p4::before { background:var(--yellow); }
-    .pillar.p5::before { background:var(--teal); }
+    .pillar-vert::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+    .pillar-vert.p1::before { background:var(--blue); }
+    .pillar-vert.p2::before { background:var(--cyan); }
+    .pillar-vert.p3::before { background:var(--purple); }
+    .pillar-vert-tag { font-size:9px; font-weight:700; padding:2px 8px; border-radius:10px; letter-spacing:.6px; text-transform:uppercase; display:inline-block; margin-bottom:4px; }
+    .pillar-vert-tag.v { background:rgba(59,130,246,.1); color:var(--blue); border:1px solid rgba(59,130,246,.25); }
     .pillar-icon  { font-size:22px; }
     .pillar-title { font-size:12px; font-weight:800; color:white; text-transform:uppercase; letter-spacing:.4px; line-height:1.3; }
     .pillar-sub   { font-size:10.5px; color:var(--muted); line-height:1.45; }
@@ -241,71 +270,90 @@
 </div>
 
 <!-- ══ PROGRAM PILLARS ═══════════════════════════════════ -->
-<div class="sec">🏛️ Program Pillars — 30,000 ft View</div>
-<div class="pillars">
+<div class="sec">🏛️ Program Pillars — 30,000 ft View · Project Helix Architecture</div>
+<div class="pillar-layout">
 
-  <div class="pillar p1">
-    <div class="pillar-icon">🎯</div>
-    <div class="pillar-title">Lead Management</div>
-    <div class="pillar-sub">AI-driven lead generation and scoring for enriched opportunity pipelines</div>
-    <ul class="pillar-items">
-      <li>Lead Generation, Data Enrichment &amp; Contactability</li>
-      <li>Lead Segmentation &amp; Scoring</li>
-      <li>Lead Distribution &amp; Routing</li>
-      <li>Campaign Management</li>
-    </ul>
+  <!-- ── AI FOR SALES — horizontal top banner ── -->
+  <div class="pillar-horiz p-ai">
+    <div class="pillar-horiz-hd">
+      <span style="font-size:22px;">🤖</span>
+      <div class="pillar-horiz-title">AI for Sales</div>
+      <span class="pillar-horiz-tag ai">Horizontal · Cross-cutting</span>
+      <div class="pillar-horiz-sub">Unleash AI to align Sales with GTM and accelerate growth</div>
+    </div>
+    <div class="horiz-items">
+      <span class="horiz-chip ai-chip">AI Guided Selling</span>
+      <span class="horiz-chip ai-chip">Intuit Assist — Seller Co-pilot</span>
+      <span class="horiz-chip ai-chip">Agentic AI Automation</span>
+      <span class="horiz-chip ai-chip">Seismic Content Intelligence</span>
+      <span class="horiz-chip ai-chip">Automated Note-Taking for Sellers</span>
+      <span class="horiz-chip ai-chip">Lead &amp; Oppty Scoring (Einstein / SFDC)</span>
+      <span class="horiz-chip ai-chip">Post-Call Summarization for Coaching</span>
+      <span class="horiz-chip ai-chip">Forecast Intelligence &amp; Automation</span>
+    </div>
   </div>
 
-  <div class="pillar p2">
-    <div class="pillar-icon">💼</div>
-    <div class="pillar-title">Seller Experiences</div>
-    <div class="pillar-sub">AI-powered insights to prioritize clients, personalize solutions, and accelerate growth</div>
-    <ul class="pillar-items">
-      <li>Account Info Mgt. (Account Plans, AE Home, KYC)</li>
-      <li>Book Prioritization</li>
-      <li>Pipeline Management (Forecast, Quota)</li>
-      <li>Cadence Management</li>
-    </ul>
+  <!-- ── 3 VERTICAL PILLARS ── -->
+  <div class="pillar-verticals">
+
+    <div class="pillar-vert p1">
+      <span class="pillar-vert-tag v">Vertical</span>
+      <div class="pillar-icon">🎯</div>
+      <div class="pillar-title">Lead Management</div>
+      <div class="pillar-sub">AI-driven lead generation and scoring for enriched opportunity pipelines</div>
+      <ul class="pillar-items">
+        <li>Lead Generation, Data Enrichment &amp; Contactability</li>
+        <li>Lead Segmentation &amp; Scoring</li>
+        <li>Lead Distribution &amp; Routing</li>
+        <li>Campaign Management</li>
+      </ul>
+    </div>
+
+    <div class="pillar-vert p2">
+      <span class="pillar-vert-tag v">Vertical</span>
+      <div class="pillar-icon">💼</div>
+      <div class="pillar-title">Seller Experiences</div>
+      <div class="pillar-sub">AI-powered insights to prioritize clients, personalize solutions, and accelerate growth</div>
+      <ul class="pillar-items">
+        <li>Book Prioritization</li>
+        <li>Account Info Mgt. (Account Plans, AE Home, KYC)</li>
+        <li>Pipeline Management (Forecast, Quota)</li>
+        <li>Cadence Management</li>
+      </ul>
+    </div>
+
+    <div class="pillar-vert p3">
+      <span class="pillar-vert-tag v">Vertical</span>
+      <div class="pillar-icon">📋</div>
+      <div class="pillar-title">Deal &amp; Order Management</div>
+      <div class="pillar-sub">Future-proofing sales: intelligent, compliant deals at speed and scale</div>
+      <ul class="pillar-items">
+        <li>Forecasting Intelligence &amp; Automation</li>
+        <li>IES Sales — Contracts, Order &amp; Billing</li>
+        <li>IES Sales — Renewals &amp; Amendments</li>
+        <li>IES Sales — CPQ / Money (Bill Pay, Add-ons)</li>
+      </ul>
+    </div>
+
   </div>
 
-  <div class="pillar p3">
-    <div class="pillar-icon">📋</div>
-    <div class="pillar-title">Deal &amp; Order Management</div>
-    <div class="pillar-sub">Future-proofing sales: intelligent, compliant deals delivered at speed and scale</div>
-    <ul class="pillar-items">
-      <li>Forecasting Intelligence &amp; Automation</li>
-      <li>IES Sales — Contracts, Order &amp; Billing</li>
-      <li>IES Sales — Renewals &amp; Amendments</li>
-      <li>IES Sales — CPQ / Money (Bill Pay, Add-ons)</li>
-    </ul>
-  </div>
-
-  <div class="pillar p4">
-    <div class="pillar-icon">🤖</div>
-    <div class="pillar-title">AI for Sales</div>
-    <div class="pillar-sub">Unleash AI to align Sales with GTM and accelerate growth</div>
-    <ul class="pillar-items">
-      <li>AI Guided Selling + Intuit Assist (Seller Co-pilot)</li>
-      <li>Agentic AI Automation</li>
-      <li>Automated Note-Taking &amp; Post-Call Summary</li>
-      <li>Lead &amp; Oppty Scoring (Einstein / SFDC)</li>
-      <li>Seismic Content Intelligence</li>
-      <li>Forecast Intelligence</li>
-    </ul>
-  </div>
-
-  <div class="pillar p5">
-    <div class="pillar-icon">🏗️</div>
-    <div class="pillar-title">Foundations</div>
-    <div class="pillar-sub">Unified CXM on Salesforce enriched by strategic 3P integrations</div>
-    <ul class="pillar-items">
-      <li>Salesforce CXM Platform</li>
-      <li>Data &amp; 3P Strategy</li>
-      <li>Insights &amp; RoB</li>
-      <li>Citizen Developer</li>
-      <li>Workforce Management</li>
-      <li>Sales Data (Horizontal)</li>
-    </ul>
+  <!-- ── FOUNDATIONS — horizontal bottom banner ── -->
+  <div class="pillar-horiz p-fnd">
+    <div class="pillar-horiz-hd">
+      <span style="font-size:22px;">🏗️</span>
+      <div class="pillar-horiz-title">Foundations</div>
+      <span class="pillar-horiz-tag fnd">Horizontal · Cross-cutting</span>
+      <div class="pillar-horiz-sub">Unified CXM on Salesforce enriched by strategic 3P integrations</div>
+    </div>
+    <div class="horiz-items">
+      <span class="horiz-chip fnd-chip">Salesforce CXM Platform</span>
+      <span class="horiz-chip fnd-chip">Data &amp; 3P Strategy</span>
+      <span class="horiz-chip fnd-chip">Insights &amp; RoB</span>
+      <span class="horiz-chip fnd-chip">Citizen Developer</span>
+      <span class="horiz-chip fnd-chip">Workforce Management</span>
+      <span class="horiz-chip fnd-chip">Sales Data (Horizontal)</span>
+      <span class="horiz-chip fnd-chip">Cadence Management</span>
+    </div>
   </div>
 
 </div>
