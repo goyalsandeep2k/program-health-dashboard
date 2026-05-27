@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Helix — Sales Transformation Program Charter</title>
+  <style>
+    :root {
+      --bg:       #080E1B;
+      --surface:  #0F172A;
+      --surface2: #1E293B;
+      --border:   #1E2D45;
+      --text:     #E2E8F0;
+      --muted:    #64748B;
+      --blue:     #3B82F6;
+      --green:    #22C55E;
+      --yellow:   #F59E0B;
+      --red:      #EF4444;
+      --cyan:     #06B6D4;
+      --purple:   #A855F7;
+      --orange:   #F97316;
+      --teal:     #14B8A6;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      padding: 28px 32px; min-height: 100vh;
+    }
+
+    /* ── HEADER ─────────────────────────────────────── */
+    .header {
+      display:flex; justify-content:space-between; align-items:flex-start;
+      padding-bottom:20px; border-bottom:1px solid var(--border); margin-bottom:24px;
+    }
+    .prog-name { font-size:24px; font-weight:800; color:white; letter-spacing:-.3px; }
+    .prog-name span { color:var(--blue); }
+    .prog-sub  { font-size:13px; color:var(--muted); margin-top:5px; }
+    .header-right { text-align:right; }
+    .meta { font-size:12px; color:var(--muted); line-height:1.9; margin-top:8px; }
+    .badge {
+      display:inline-flex; align-items:center; gap:6px; padding:5px 13px;
+      border-radius:20px; font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase;
+    }
+    .badge.blue   { background:rgba(59,130,246,.15);  color:var(--blue);   border:1px solid rgba(59,130,246,.3); }
+    .badge.green  { background:rgba(34,197,94,.15);   color:var(--green);  border:1px solid rgba(34,197,94,.3); }
+    .dot { width:7px; height:7px; border-radius:50%; background:currentColor; }
+
+    /* ── MISSION BANNER ─────────────────────────────── */
+    .mission {
+      background:linear-gradient(135deg,#0D1E38,#0A1820);
+      border:1px solid var(--border); border-left:4px solid var(--blue);
+      border-radius:10px; padding:18px 22px; margin-bottom:24px;
+    }
+    .mission-lbl { font-size:10px; font-weight:700; letter-spacing:1.5px; color:var(--blue); text-transform:uppercase; margin-bottom:8px; }
+    .mission-txt { font-size:13.5px; color:#CBD5E1; line-height:1.7; }
+    .mission-txt strong { color:white; }
+    .mission-kpis { display:flex; gap:28px; margin-top:14px; flex-wrap:wrap; }
+    .mkpi { text-align:center; }
+    .mkpi-val { font-size:20px; font-weight:900; color:var(--green); }
+    .mkpi-lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; margin-top:2px; }
+
+    /* ── SECTION TITLE ───────────────────────────────── */
+    .sec {
+      font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase;
+      color:var(--muted); margin-bottom:16px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .sec::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* ── PILLARS GRID ────────────────────────────────── */
+    .pillars { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:28px; }
+    .pillar {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:10px; padding:16px 14px; display:flex; flex-direction:column; gap:10px;
+      position:relative; overflow:hidden;
+    }
+    .pillar::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+    .pillar.p1::before { background:var(--blue); }
+    .pillar.p2::before { background:var(--cyan); }
+    .pillar.p3::before { background:var(--purple); }
+    .pillar.p4::before { background:var(--yellow); }
+    .pillar.p5::before { background:var(--teal); }
+    .pillar-icon  { font-size:22px; }
+    .pillar-title { font-size:12px; font-weight:800; color:white; text-transform:uppercase; letter-spacing:.4px; line-height:1.3; }
+    .pillar-sub   { font-size:10.5px; color:var(--muted); line-height:1.45; }
+    .pillar-items { list-style:none; margin-top:4px; }
+    .pillar-items li {
+      font-size:11px; color:#94A3B8; padding:4px 0;
+      border-bottom:1px solid rgba(30,45,69,.5);
+      display:flex; align-items:flex-start; gap:6px; line-height:1.4;
+    }
+    .pillar-items li:last-child { border-bottom:none; }
+    .pillar-items li::before { content:'›'; color:var(--muted); flex-shrink:0; margin-top:1px; }
+
+    /* ── DACE TABLE ──────────────────────────────────── */
+    .dace-wrap { overflow-x:auto; margin-bottom:28px; }
+    .dace-note { font-size:11px; color:var(--muted); margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+    table.dace {
+      width:100%; border-collapse:collapse; font-size:12px; min-width:860px;
+    }
+    table.dace thead tr:first-child { background:rgba(59,130,246,.08); }
+    table.dace thead tr:nth-child(2) { background:var(--surface2); }
+    table.dace th {
+      padding:9px 12px; text-align:center; font-size:10px; font-weight:700;
+      letter-spacing:.8px; text-transform:uppercase; color:var(--muted);
+      border:1px solid var(--border);
+    }
+    table.dace th.group-biz  { color:var(--blue);   background:rgba(59,130,246,.06);  }
+    table.dace th.group-vep  { color:var(--green);  background:rgba(34,197,94,.06);   }
+    table.dace th.group-gtm  { color:var(--purple); background:rgba(168,85,247,.06);  }
+    table.dace th.left       { text-align:left; }
+    table.dace tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
+    table.dace tbody tr:hover { background:rgba(59,130,246,.04); }
+    table.dace td { padding:10px 12px; border:1px solid var(--border); text-align:center; vertical-align:middle; }
+    table.dace td.pillar-cell { text-align:left; }
+    .pillar-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:12px; font-weight:600; color:white;
+    }
+    .pillar-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .pillar-type { font-size:10px; color:var(--muted); margin-top:2px; }
+    .redacted {
+      display:inline-block;
+      background:var(--surface2); color:var(--muted);
+      border:1px solid var(--border); border-radius:4px;
+      padding:2px 10px; font-size:10.5px; letter-spacing:.3px;
+      font-style:italic;
+    }
+    .seq-num {
+      width:22px; height:22px; border-radius:50%; background:var(--surface2);
+      border:1px solid var(--border); display:inline-flex; align-items:center;
+      justify-content:center; font-size:10px; font-weight:700; color:var(--muted);
+    }
+
+    /* ── OPERATING RHYTHM ────────────────────────────── */
+    .rhythm-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:28px; }
+    .rhythm-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:10px;
+      padding:16px 18px;
+    }
+    .rhythm-hd { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+    .rhythm-title { font-size:14px; font-weight:700; color:white; }
+    .cadence-pill {
+      font-size:10px; font-weight:700; padding:3px 10px; border-radius:10px; white-space:nowrap;
+    }
+    .cadence-pill.weekly    { background:rgba(34,197,94,.12);  color:var(--green);  border:1px solid rgba(34,197,94,.25); }
+    .cadence-pill.biweekly  { background:rgba(59,130,246,.12); color:var(--blue);   border:1px solid rgba(59,130,246,.25); }
+    .cadence-pill.monthly   { background:rgba(245,158,11,.12); color:var(--yellow); border:1px solid rgba(245,158,11,.25); }
+    .rhythm-purpose { font-size:11.5px; color:var(--muted); line-height:1.5; margin-bottom:10px; }
+    .rhythm-participants { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+    .role-chip {
+      font-size:10px; padding:2px 9px; border-radius:10px;
+      background:var(--surface2); border:1px solid var(--border); color:#94A3B8;
+    }
+    .workstreams { list-style:none; margin-top:8px; }
+    .workstreams li {
+      font-size:11px; color:var(--muted); padding:3px 0;
+      display:flex; align-items:center; gap:6px;
+    }
+    .ws-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+    /* ── OPMECH FULL CALENDAR VIEW ───────────────────── */
+    .calendar { margin-bottom:28px; }
+    .week-row { display:grid; grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr; gap:8px; margin-bottom:8px; align-items:start; }
+    .week-label { font-size:10px; font-weight:700; color:var(--muted); text-align:right; padding-top:10px; text-transform:uppercase; letter-spacing:.8px; }
+    .cal-slot {
+      background:var(--surface); border:1px solid var(--border); border-radius:8px;
+      padding:8px 10px; font-size:11px;
+    }
+    .cal-slot.empty { background:transparent; border-color:transparent; }
+    .cal-slot-title { font-weight:700; color:white; font-size:11px; }
+    .cal-slot-sub   { color:var(--muted); font-size:10px; margin-top:2px; }
+    .cal-slot.steerco    { border-left:3px solid var(--blue); }
+    .cal-slot.program    { border-left:3px solid var(--green); }
+    .cal-slot.workstream { border-left:3px solid var(--purple); }
+    .cal-slot.tech       { border-left:3px solid var(--yellow); }
+    .cal-header { display:grid; grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr; gap:8px; margin-bottom:6px; }
+    .cal-day { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; text-align:center; padding:4px; }
+
+    /* ── ARTIFACTS ───────────────────────────────────── */
+    .artifacts-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:28px; }
+    .artifact-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:10px;
+      padding:14px 16px; display:flex; gap:10px; align-items:flex-start;
+    }
+    .artifact-icon { font-size:20px; flex-shrink:0; }
+    .artifact-name { font-size:12px; font-weight:700; color:white; margin-bottom:3px; }
+    .artifact-sub  { font-size:10.5px; color:var(--muted); line-height:1.4; }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    .footer {
+      text-align:center; padding-top:18px; margin-top:8px;
+      border-top:1px solid var(--border); font-size:11px; color:var(--muted);
+    }
+    .footer a { color:var(--blue); text-decoration:none; }
+    .redacted-notice {
+      display:inline-flex; align-items:center; gap:6px; margin-top:8px;
+      font-size:10.5px; color:var(--muted);
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:6px; padding:4px 12px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ════════════════════════════════════════════ -->
+<div class="header">
+  <div>
+    <div class="prog-name">Project Helix <span>· Sales Transformation</span></div>
+    <div class="prog-sub">Program Charter · 30,000 ft View · Pillars · Accountability · Operating Rhythm</div>
+  </div>
+  <div class="header-right">
+    <span class="badge blue"><span class="dot"></span> FY26 Active</span>
+    &nbsp;
+    <span class="badge green"><span class="dot"></span> Multi-Org Program</span>
+    <div class="meta">
+      Domain: Mid-Market &amp; SMB Sales Transformation<br>
+      Orgs: Business · VEP · GTM-T<br>
+      Input Goals: MMO-IG01 · DFY-EE-IG04 · GBSG-IG03<br>
+      Last Updated: May 26, 2026
+    </div>
+  </div>
+</div>
+
+<!-- ══ NORTH STAR ════════════════════════════════════════ -->
+<div class="mission">
+  <div class="mission-lbl">🧭 Program North Star</div>
+  <div class="mission-txt">
+    Pioneer next-generation Intuit sales with <strong>strategic predictive and generative AI deployment</strong> — delivering intelligent lead management, empowered sellers, automated engagement, and accelerated high-value growth across Mid-Market and SMB.
+    Scale IES as the AI-powered ERP alternative for complex Mid-Market businesses through <strong>unified sales motions, AI-native tooling, and a durable Salesforce CXM foundation</strong>.
+  </div>
+  <div class="mission-kpis">
+    <div class="mkpi"><div class="mkpi-val">366%</div><div class="mkpi-lbl">IES Contract Growth Target</div></div>
+    <div class="mkpi"><div class="mkpi-val">2.4K→11.3K</div><div class="mkpi-lbl">New Contracts</div></div>
+    <div class="mkpi"><div class="mkpi-val">30%→50%+</div><div class="mkpi-lbl">Seller Productivity</div></div>
+    <div class="mkpi"><div class="mkpi-val">46%→80%</div><div class="mkpi-lbl">4+ Feature Adoption (30 days)</div></div>
+    <div class="mkpi"><div class="mkpi-val">72%→85%</div><div class="mkpi-lbl">tNPS Target</div></div>
+    <div class="mkpi"><div class="mkpi-val">+10–20%</div><div class="mkpi-lbl">Win Rate Improvement</div></div>
+  </div>
+</div>
+
+<!-- ══ PROGRAM PILLARS ═══════════════════════════════════ -->
+<div class="sec">🏛️ Program Pillars — 30,000 ft View</div>
+<div class="pillars">
+
+  <div class="pillar p1">
+    <div class="pillar-icon">🎯</div>
+    <div class="pillar-title">Lead Management</div>
+    <div class="pillar-sub">AI-driven lead generation and scoring for enriched opportunity pipelines</div>
+    <ul class="pillar-items">
+      <li>Lead Generation, Data Enrichment &amp; Contactability</li>
+      <li>Lead Segmentation &amp; Scoring</li>
+      <li>Lead Distribution &amp; Routing</li>
+      <li>Campaign Management</li>
+    </ul>
+  </div>
+
+  <div class="pillar p2">
+    <div class="pillar-icon">💼</div>
+    <div class="pillar-title">Seller Experiences</div>
+    <div class="pillar-sub">AI-powered insights to prioritize clients, personalize solutions, and accelerate growth</div>
+    <ul class="pillar-items">
+      <li>Account Info Mgt. (Account Plans, AE Home, KYC)</li>
+      <li>Book Prioritization</li>
+      <li>Pipeline Management (Forecast, Quota)</li>
+      <li>Cadence Management</li>
+    </ul>
+  </div>
+
+  <div class="pillar p3">
+    <div class="pillar-icon">📋</div>
+    <div class="pillar-title">Deal &amp; Order Management</div>
+    <div class="pillar-sub">Future-proofing sales: intelligent, compliant deals delivered at speed and scale</div>
+    <ul class="pillar-items">
+      <li>Forecasting Intelligence &amp; Automation</li>
+      <li>IES Sales — Contracts, Order &amp; Billing</li>
+      <li>IES Sales — Renewals &amp; Amendments</li>
+      <li>IES Sales — CPQ / Money (Bill Pay, Add-ons)</li>
+    </ul>
+  </div>
+
+  <div class="pillar p4">
+    <div class="pillar-icon">🤖</div>
+    <div class="pillar-title">AI for Sales</div>
+    <div class="pillar-sub">Unleash AI to align Sales with GTM and accelerate growth</div>
+    <ul class="pillar-items">
+      <li>AI Guided Selling + Intuit Assist (Seller Co-pilot)</li>
+      <li>Agentic AI Automation</li>
+      <li>Automated Note-Taking &amp; Post-Call Summary</li>
+      <li>Lead &amp; Oppty Scoring (Einstein / SFDC)</li>
+      <li>Seismic Content Intelligence</li>
+      <li>Forecast Intelligence</li>
+    </ul>
+  </div>
+
+  <div class="pillar p5">
+    <div class="pillar-icon">🏗️</div>
+    <div class="pillar-title">Foundations</div>
+    <div class="pillar-sub">Unified CXM on Salesforce enriched by strategic 3P integrations</div>
+    <ul class="pillar-items">
+      <li>Salesforce CXM Platform</li>
+      <li>Data &amp; 3P Strategy</li>
+      <li>Insights &amp; RoB</li>
+      <li>Citizen Developer</li>
+      <li>Workforce Management</li>
+      <li>Sales Data (Horizontal)</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ══ LEADERSHIP ACCOUNTABILITY MATRIX (DACE) ══════════ -->
+<div class="sec">👥 Leadership Accountability Matrix — Business · VEP · GTM-T</div>
+<div class="dace-note">
+  🔒 Names redacted for sharing. Structure reflects Business / VEP / GTM-T accountability across each pillar.
+</div>
+<div class="dace-wrap">
+<table class="dace">
+  <thead>
+    <tr>
+      <th colspan="3" style="text-align:left; color:var(--text);">Pillar</th>
+      <th colspan="2" class="group-biz">Business</th>
+      <th colspan="3" class="group-vep">VEP (Virtual Expert Platform)</th>
+      <th colspan="3" class="group-gtm">GTM-T</th>
+    </tr>
+    <tr>
+      <th class="left">#</th>
+      <th class="left">Sales Funnel Pillar</th>
+      <th class="left">Type</th>
+      <th class="group-biz">Sales Innovation</th>
+      <th class="group-biz">Marketing</th>
+      <th class="group-vep">Product Mgt.</th>
+      <th class="group-vep">Product Dev.</th>
+      <th class="group-vep">Product TPM</th>
+      <th class="group-gtm">Product Mgt.</th>
+      <th class="group-gtm">Product Dev.</th>
+      <th class="group-gtm">Product TPM</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="seq-num">1</span></td>
+      <td class="pillar-cell">
+        <div class="pillar-badge">
+          <span class="pillar-dot" style="background:var(--blue);"></span>
+          Lead Management
+        </div>
+        <div class="pillar-type">Vertical</div>
+      </td>
+      <td style="font-size:10.5px;color:var(--muted);">Vertical</td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-num">2</span></td>
+      <td class="pillar-cell">
+        <div class="pillar-badge">
+          <span class="pillar-dot" style="background:var(--cyan);"></span>
+          Seller Experiences
+        </div>
+      </td>
+      <td style="font-size:10.5px;color:var(--muted);">Vertical</td>
+      <td><span class="redacted">—  —</span></td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+    </tr>
+    <tr>
+      <td><span class="seq-num">3</span></td>
+      <td class="pillar-cell">
+        <div class="pillar-badge">
+          <span class="pillar-dot" style="background:var(--purple);"></span>
+          Deal &amp; Order Management
+        </div>
+      </td>
+      <td style="font-size:10.5px;color:var(--muted);">Vertical</td>
+      <td><span class="redacted">—  —</span></td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+    </tr>
+    <tr>
+      <td><span class="seq-num">4</span></td>
+      <td class="pillar-cell">
+        <div class="pillar-badge">
+          <span class="pillar-dot" style="background:var(--yellow);"></span>
+          AI for Sales
+        </div>
+        <div class="pillar-type">Horizontal</div>
+      </td>
+      <td style="font-size:10.5px;color:var(--muted);">Horizontal</td>
+      <td><span class="redacted">—  —</span></td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+    </tr>
+    <tr>
+      <td><span class="seq-num">5</span></td>
+      <td class="pillar-cell">
+        <div class="pillar-badge">
+          <span class="pillar-dot" style="background:var(--teal);"></span>
+          Foundations
+        </div>
+        <div class="pillar-type">Horizontal</div>
+      </td>
+      <td style="font-size:10.5px;color:var(--muted);">Horizontal</td>
+      <td><span class="redacted">—  —</span></td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+      <td style="color:var(--muted);font-size:11px;">n/a</td>
+    </tr>
+    <tr>
+      <td><span class="seq-num">6</span></td>
+      <td class="pillar-cell">
+        <div class="pillar-badge">
+          <span class="pillar-dot" style="background:var(--green);"></span>
+          Sales Data
+        </div>
+        <div class="pillar-type">Horizontal</div>
+      </td>
+      <td style="font-size:10.5px;color:var(--muted);">Horizontal</td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+      <td><span class="redacted">—  —</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══ PROGRAM OPERATING RHYTHM ══════════════════════════ -->
+<div class="sec">🔄 Program Operating Rhythm — Opmech Cadence</div>
+<div class="rhythm-grid">
+
+  <div class="rhythm-card">
+    <div class="rhythm-hd">
+      <div class="rhythm-title">🏛️ Project Helix Steerco</div>
+      <span class="cadence-pill biweekly">Bi-Weekly · Wk 1 &amp; 3</span>
+    </div>
+    <div class="rhythm-purpose">Executive alignment, cross-org escalation resolution, program-level go/no-go decisions. The highest accountability forum for the program — input goals, delivery status, and blockers that need executive action.</div>
+    <div class="rhythm-participants">
+      <span class="role-chip">Exec Sponsors</span>
+      <span class="role-chip">Biz Leadership</span>
+      <span class="role-chip">VEP Leadership</span>
+      <span class="role-chip">GTM-T Leadership</span>
+      <span class="role-chip">Program Driver</span>
+    </div>
+  </div>
+
+  <div class="rhythm-card">
+    <div class="rhythm-hd">
+      <div class="rhythm-title">📋 Program Meeting</div>
+      <span class="cadence-pill biweekly">Bi-Weekly · Wk 1 &amp; 3</span>
+    </div>
+    <div class="rhythm-purpose">Cross-pillar program status review. Risks, dependencies, decisions needed, and milestone tracking across all 5 pillars. The connecting layer between workstream execution and Steerco escalation.</div>
+    <div style="margin-top:10px;">
+      <ul class="workstreams">
+        <li><span class="ws-dot" style="background:var(--blue);"></span>Lead Management</li>
+        <li><span class="ws-dot" style="background:var(--cyan);"></span>Seller Experiences</li>
+        <li><span class="ws-dot" style="background:var(--purple);"></span>Deal &amp; Order Desk</li>
+        <li><span class="ws-dot" style="background:var(--yellow);"></span>AI for Sales</li>
+        <li><span class="ws-dot" style="background:var(--teal);"></span>Foundations</li>
+      </ul>
+    </div>
+    <div class="rhythm-participants" style="margin-top:10px;">
+      <span class="role-chip">Biz Drivers</span>
+      <span class="role-chip">PM Drivers</span>
+      <span class="role-chip">PD Leaders</span>
+      <span class="role-chip">TPM Drivers</span>
+    </div>
+  </div>
+
+  <div class="rhythm-card">
+    <div class="rhythm-hd">
+      <div class="rhythm-title">🔬 Tech Tuesday — Sales Transformation</div>
+      <span class="cadence-pill weekly">Weekly</span>
+    </div>
+    <div class="rhythm-purpose">Deep technical alignment on platform decisions, architecture trade-offs, and cross-team engineering dependencies. Prep (T-7) ensures agenda is pre-aligned and decisions are unblocked in the session itself.</div>
+    <div class="rhythm-participants" style="margin-top:10px;">
+      <span class="role-chip">Tech Tuesday Prep · T-7 days</span>
+      <span class="role-chip">Biz Leaders</span>
+      <span class="role-chip">PD Leaders</span>
+      <span class="role-chip">PM Drivers</span>
+    </div>
+  </div>
+
+  <div class="rhythm-card">
+    <div class="rhythm-hd">
+      <div class="rhythm-title">⚙️ Workstream / POD Level Meetings</div>
+      <span class="cadence-pill biweekly">Bi-Weekly · Wk 2 &amp; 4</span>
+    </div>
+    <div class="rhythm-purpose">Pillar-level execution tracking. Each workstream runs its own pod: milestones, blockers, velocity, and RAID log updates. Feeds directly into the Program Meeting the following week.</div>
+    <div style="margin-top:10px;">
+      <ul class="workstreams">
+        <li><span class="ws-dot" style="background:var(--blue);"></span>Lead Management POD</li>
+        <li><span class="ws-dot" style="background:var(--cyan);"></span>Seller Experiences POD</li>
+        <li><span class="ws-dot" style="background:var(--purple);"></span>Deal &amp; Order Desk POD</li>
+        <li><span class="ws-dot" style="background:var(--yellow);"></span>AI for Sales POD</li>
+        <li><span class="ws-dot" style="background:var(--teal);"></span>Foundations POD</li>
+      </ul>
+    </div>
+    <div class="rhythm-participants" style="margin-top:10px;">
+      <span class="role-chip">Pillar Biz Driver</span>
+      <span class="role-chip">PD Lead</span>
+      <span class="role-chip">PM Lead</span>
+      <span class="role-chip">XD</span>
+      <span class="role-chip">TPM</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ OPMECH WEEKLY CADENCE VISUAL ══════════════════════ -->
+<div class="sec">📅 Monthly Opmech Cadence — Visual View</div>
+<div class="calendar">
+  <div style="display:grid;grid-template-columns:80px repeat(4,1fr);gap:8px;margin-bottom:6px;">
+    <div></div>
+    <div style="text-align:center;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:4px;background:var(--surface2);border-radius:6px;">Week 1</div>
+    <div style="text-align:center;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:4px;background:var(--surface2);border-radius:6px;">Week 2</div>
+    <div style="text-align:center;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:4px;background:var(--surface2);border-radius:6px;">Week 3</div>
+    <div style="text-align:center;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:4px;background:var(--surface2);border-radius:6px;">Week 4</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:80px repeat(4,1fr);gap:8px;margin-bottom:8px;align-items:start;">
+    <div style="font-size:10px;font-weight:700;color:var(--muted);text-align:right;padding-top:10px;text-transform:uppercase;letter-spacing:.8px;">Exec</div>
+    <div class="cal-slot steerco"><div class="cal-slot-title">Steerco</div><div class="cal-slot-sub">Executive alignment</div></div>
+    <div class="cal-slot empty"></div>
+    <div class="cal-slot steerco"><div class="cal-slot-title">Steerco</div><div class="cal-slot-sub">Executive alignment</div></div>
+    <div class="cal-slot empty"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:80px repeat(4,1fr);gap:8px;margin-bottom:8px;align-items:start;">
+    <div style="font-size:10px;font-weight:700;color:var(--muted);text-align:right;padding-top:10px;text-transform:uppercase;letter-spacing:.8px;">Program</div>
+    <div class="cal-slot program"><div class="cal-slot-title">Program Meeting</div><div class="cal-slot-sub">Cross-pillar status</div></div>
+    <div class="cal-slot empty"></div>
+    <div class="cal-slot program"><div class="cal-slot-title">Program Meeting</div><div class="cal-slot-sub">Cross-pillar status</div></div>
+    <div class="cal-slot empty"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:80px repeat(4,1fr);gap:8px;margin-bottom:8px;align-items:start;">
+    <div style="font-size:10px;font-weight:700;color:var(--muted);text-align:right;padding-top:10px;text-transform:uppercase;letter-spacing:.8px;">Workstream</div>
+    <div class="cal-slot empty"></div>
+    <div class="cal-slot workstream"><div class="cal-slot-title">All 5 POD Meetings</div><div class="cal-slot-sub">Pillar execution tracking</div></div>
+    <div class="cal-slot empty"></div>
+    <div class="cal-slot workstream"><div class="cal-slot-title">All 5 POD Meetings</div><div class="cal-slot-sub">Pillar execution tracking</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:80px repeat(4,1fr);gap:8px;margin-bottom:8px;align-items:start;">
+    <div style="font-size:10px;font-weight:700;color:var(--muted);text-align:right;padding-top:10px;text-transform:uppercase;letter-spacing:.8px;">Tech</div>
+    <div class="cal-slot tech"><div class="cal-slot-title">Tech Tuesday</div><div class="cal-slot-sub">+ T-7 prep</div></div>
+    <div class="cal-slot tech"><div class="cal-slot-title">Tech Tuesday</div><div class="cal-slot-sub">+ T-7 prep</div></div>
+    <div class="cal-slot tech"><div class="cal-slot-title">Tech Tuesday</div><div class="cal-slot-sub">+ T-7 prep</div></div>
+    <div class="cal-slot tech"><div class="cal-slot-title">Tech Tuesday</div><div class="cal-slot-sub">+ T-7 prep</div></div>
+  </div>
+</div>
+
+<!-- ══ KEY ARTIFACTS ══════════════════════════════════════ -->
+<div class="sec">📁 Program Artifacts — Source of Truth</div>
+<div class="artifacts-grid">
+  <div class="artifact-card">
+    <div class="artifact-icon">🗺️</div>
+    <div><div class="artifact-name">Roadmap</div><div class="artifact-sub">Pillar-level program roadmap with milestones and dependencies</div></div>
+  </div>
+  <div class="artifact-card">
+    <div class="artifact-icon">📊</div>
+    <div><div class="artifact-name">Initiatives Tracker + RAID Log</div><div class="artifact-sub">Smartsheet — split by pillar · Risks, Assumptions, Issues, Dependencies</div></div>
+  </div>
+  <div class="artifact-card">
+    <div class="artifact-icon">⚡</div>
+    <div><div class="artifact-name">Execution Tracker + Velocity</div><div class="artifact-sub">Milestones Smartsheet + GSheet velocity tracker for delivery pace</div></div>
+  </div>
+  <div class="artifact-card">
+    <div class="artifact-icon">📡</div>
+    <div><div class="artifact-name">Command Tracker + Weekly Readout</div><div class="artifact-sub">GSheet command tracker · GDoc weekly status readout for stakeholders</div></div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════ -->
+<div class="footer">
+  <div>Program Charter · Project Helix — Sales Transformation &nbsp;·&nbsp; <a href="https://github.com/goyalsandeep2k/program-health-dashboard" target="_blank">GitHub</a> &nbsp;·&nbsp; <a href="https://sandeepgoyal.org" target="_blank">sandeepgoyal.org</a></div>
+  <div class="redacted-notice">🔒 Names redacted — structure and content sanitized for external sharing</div>
+</div>
+
+</body>
+</html>
