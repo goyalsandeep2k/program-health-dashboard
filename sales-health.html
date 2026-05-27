@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Program Health — Kaseya 365</title>
+  <style>
+    :root {
+      --bg:       #080E1B;
+      --surface:  #0F172A;
+      --surface2: #1E293B;
+      --border:   #1E2D45;
+      --text:     #E2E8F0;
+      --muted:    #64748B;
+      --blue:     #3B82F6;
+      --green:    #22C55E;
+      --yellow:   #F59E0B;
+      --red:      #EF4444;
+      --cyan:     #06B6D4;
+      --purple:   #A855F7;
+      --orange:   #F97316;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      padding: 28px 32px; min-height: 100vh;
+    }
+
+    /* ── HEADER ─────────────────────────────────────── */
+    .header {
+      display:flex; justify-content:space-between; align-items:flex-start;
+      padding-bottom:20px; border-bottom:1px solid var(--border); margin-bottom:22px;
+    }
+    .prog-name { font-size:24px; font-weight:800; color:white; letter-spacing:-.3px; }
+    .prog-name span { color:var(--blue); }
+    .prog-sub  { font-size:13px; color:var(--muted); margin-top:5px; }
+    .header-right { text-align:right; }
+    .meta { font-size:12px; color:var(--muted); line-height:1.9; margin-top:8px; }
+    .badge {
+      display:inline-flex; align-items:center; gap:6px; padding:5px 13px;
+      border-radius:20px; font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase;
+    }
+    .badge.yellow { background:rgba(245,158,11,.15); color:var(--yellow); border:1px solid rgba(245,158,11,.3); }
+    .badge.green  { background:rgba(34,197,94,.15);  color:var(--green);  border:1px solid rgba(34,197,94,.3); }
+    .badge.red    { background:rgba(239,68,68,.15);   color:var(--red);    border:1px solid rgba(239,68,68,.3); }
+    .dot { width:7px; height:7px; border-radius:50%; background:currentColor; }
+
+    /* ── EXEC NARRATIVE ──────────────────────────────── */
+    .narrative {
+      background: linear-gradient(135deg,#0D1828,#110D20);
+      border:1px solid var(--border); border-left:4px solid var(--yellow);
+      border-radius:10px; padding:18px 22px; margin-bottom:22px;
+    }
+    .narrative-lbl {
+      font-size:10px; font-weight:700; letter-spacing:1.5px;
+      color:var(--yellow); text-transform:uppercase; margin-bottom:9px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .narrative-txt { font-size:13.5px; color:#CBD5E1; line-height:1.75; }
+    .narrative-txt strong { color:white; }
+    .narrative-actions { margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; }
+    .action-pill {
+      font-size:11px; padding:4px 12px; border-radius:20px; font-weight:600;
+      display:flex; align-items:center; gap:5px;
+    }
+    .action-pill.red    { background:rgba(239,68,68,.12);  color:var(--red);    border:1px solid rgba(239,68,68,.25); }
+    .action-pill.yellow { background:rgba(245,158,11,.12); color:var(--yellow); border:1px solid rgba(245,158,11,.25); }
+    .action-pill.blue   { background:rgba(59,130,246,.12); color:var(--blue);   border:1px solid rgba(59,130,246,.25); }
+
+    /* ── SECTION TITLE ───────────────────────────────── */
+    .sec {
+      font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase;
+      color:var(--muted); margin-bottom:14px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .sec::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* ── ARR SNAPSHOT ────────────────────────────────── */
+    .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+    .kpi-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:10px;
+      padding:16px 18px; position:relative; overflow:hidden;
+    }
+    .kpi-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    }
+    .kpi-card.green::before  { background:var(--green); }
+    .kpi-card.yellow::before { background:var(--yellow); }
+    .kpi-card.red::before    { background:var(--red); }
+    .kpi-card.blue::before   { background:var(--blue); }
+    .kpi-label { font-size:10.5px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+    .kpi-val { font-size:30px; font-weight:900; letter-spacing:-.5px; line-height:1; }
+    .kpi-val.green  { color:var(--green); }
+    .kpi-val.yellow { color:var(--yellow); }
+    .kpi-val.red    { color:var(--red); }
+    .kpi-val.blue   { color:var(--blue); }
+    .kpi-sub   { font-size:11px; color:var(--muted); margin-top:6px; }
+    .kpi-delta { font-size:12px; font-weight:700; margin-top:5px; }
+    .kpi-delta.up   { color:var(--green); }
+    .kpi-delta.down { color:var(--red); }
+    .kpi-bar  { height:4px; background:var(--surface2); border-radius:2px; margin-top:11px; overflow:hidden; }
+    .kpi-fill { height:100%; border-radius:2px; }
+
+    /* ── ARR WATERFALL ───────────────────────────────── */
+    .waterfall {
+      display:grid; grid-template-columns:1fr 28px 1fr 28px 1fr 36px 1fr;
+      gap:0; margin-bottom:22px; align-items:stretch;
+    }
+    .wf-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:10px;
+      padding:16px 18px; text-align:center;
+    }
+    .wf-sep {
+      display:flex; align-items:center; justify-content:center;
+      font-size:20px; color:var(--muted); font-weight:300;
+    }
+    .wf-label { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+    .wf-amt   { font-size:24px; font-weight:900; letter-spacing:-.3px; }
+    .wf-sub   { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.35; }
+    .wf-bar-wrap { height:5px; background:var(--surface2); border-radius:2px; margin-top:11px; overflow:hidden; }
+    .wf-bar   { height:100%; border-radius:2px; }
+    .wf-card.new-arr  .wf-amt { color:var(--green); }
+    .wf-card.new-arr  .wf-bar { background:var(--green); }
+    .wf-card.exp-arr  .wf-amt { color:var(--cyan); }
+    .wf-card.exp-arr  .wf-bar { background:var(--cyan); }
+    .wf-card.churn    .wf-amt { color:var(--red); }
+    .wf-card.churn    .wf-bar { background:var(--red); }
+    .wf-card.net-arr  .wf-amt { color:var(--green); font-size:28px; }
+    .wf-card.net-arr {
+      border-color:rgba(34,197,94,.3);
+      background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(6,182,212,.04));
+    }
+
+    /* ── UNIT ECONOMICS ──────────────────────────────── */
+    .ue-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+    .ue-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:10px;
+      padding:16px 18px;
+    }
+    .ue-label  { font-size:10.5px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+    .ue-val    { font-size:22px; font-weight:900; color:white; letter-spacing:-.3px; }
+    .ue-target { font-size:11px; color:var(--muted); margin-top:4px; }
+    .ue-status { font-size:11.5px; font-weight:700; margin-top:5px; }
+    .ue-status.good { color:var(--green); }
+    .ue-status.warn { color:var(--yellow); }
+    .ue-status.bad  { color:var(--red); }
+
+    /* ── LEADING INDICATORS ──────────────────────────── */
+    .lead-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+    .lead-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:10px;
+      padding:14px 18px;
+    }
+    .lead-label  { font-size:10.5px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+    .lead-val    { font-size:22px; font-weight:800; letter-spacing:-.3px; margin-bottom:4px; }
+    .lead-target { font-size:11px; color:var(--muted); }
+    .trend       { font-size:11.5px; font-weight:700; margin-top:4px; }
+    .trend.up    { color:var(--green); }
+    .trend.down  { color:var(--red); }
+    .trend.flat  { color:var(--yellow); }
+
+    /* ── SUB-GOALS ───────────────────────────────────── */
+    .sub-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px; }
+    .sub-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:10px;
+      padding:16px 18px;
+    }
+    .sub-hd { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px; }
+    .sub-nm { font-size:14px; font-weight:700; color:white; }
+    .sub-tag { font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; margin-top:2px; }
+    .sub-tag.green  { background:rgba(34,197,94,.12);  color:var(--green);  border:1px solid rgba(34,197,94,.25); }
+    .sub-tag.yellow { background:rgba(245,158,11,.12); color:var(--yellow); border:1px solid rgba(245,158,11,.25); }
+    .sub-tag.red    { background:rgba(239,68,68,.12);   color:var(--red);    border:1px solid rgba(239,68,68,.25); }
+    .rag { width:10px; height:10px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+    .rag.green  { background:var(--green);  box-shadow:0 0 6px var(--green); }
+    .rag.yellow { background:var(--yellow); box-shadow:0 0 6px var(--yellow); }
+    .rag.red    { background:var(--red);    box-shadow:0 0 6px var(--red); }
+    .sub-ms { list-style:none; margin-top:12px; }
+    .sub-ms li {
+      font-size:11.5px; color:var(--muted); padding:5px 0;
+      border-bottom:1px solid rgba(30,45,69,.6);
+      display:flex; gap:8px; align-items:center;
+    }
+    .sub-ms li:last-child { border-bottom:none; }
+    .ms-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+    /* ── RISKS ───────────────────────────────────────── */
+    .risks-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:22px; }
+    .risk-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:10px;
+      padding:14px 18px; display:flex; gap:12px;
+    }
+    .risk-sev {
+      font-size:10px; font-weight:800; letter-spacing:.8px;
+      padding:3px 8px; border-radius:4px; height:fit-content; white-space:nowrap;
+    }
+    .risk-sev.high { background:rgba(239,68,68,.15);  color:var(--red);    border:1px solid rgba(239,68,68,.25); }
+    .risk-sev.med  { background:rgba(245,158,11,.15); color:var(--yellow); border:1px solid rgba(245,158,11,.25); }
+    .risk-title { font-size:13px; font-weight:600; color:white; margin-bottom:4px; }
+    .risk-desc  { font-size:11.5px; color:var(--muted); line-height:1.4; }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    .footer {
+      text-align:center; padding-top:18px; margin-top:24px;
+      border-top:1px solid var(--border); font-size:11px; color:var(--muted);
+    }
+    .footer a { color:var(--blue); text-decoration:none; }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ════════════════════════════════════════════ -->
+<div class="header">
+  <div>
+    <div class="prog-name">Sales Program Health <span>· Kaseya 365</span></div>
+    <div class="prog-sub">ARR · NRR · CAC · LTV · Growth Levers · Exec Narrative · Q2 FY26</div>
+  </div>
+  <div class="header-right">
+    <span class="badge yellow"><span class="dot"></span> AT RISK</span>
+    <div class="meta">
+      TPM: Sandeep Goyal &nbsp;·&nbsp; Sponsor: VP Sales<br>
+      Updated: May 26, 2026 &nbsp;·&nbsp; Week 21<br>
+      ARR Target: $100M &nbsp;·&nbsp; License Goal: 10,000
+    </div>
+  </div>
+</div>
+
+<!-- ══ EXEC NARRATIVE ════════════════════════════════════ -->
+<div class="narrative">
+  <div class="narrative-lbl">
+    🧠 Exec Narrative — Generated Summary
+  </div>
+  <div class="narrative-txt">
+    The Sales Transformation program is <strong>AT RISK</strong> heading into Q3 FY26. Current ARR stands at <strong>$62M</strong> with NRR of <strong>108%</strong> — 7 points below the 115% target — signaling that expansion and retention are not keeping pace with growth ambitions.
+    This quarter's net ARR of <strong>+$9.9M</strong> is 18% below the required <strong>$12M/quarter</strong> run rate needed to hit $100M by year-end. The primary drag is the AI tooling block: <strong>40% of sellers are operating without AI tools</strong>, holding funnel conversion at 14.2% versus a 20% target.
+    <strong>LTV:CAC of 4.4× is below the 5× threshold</strong>, and CAC is trending upward due to lengthening sales cycles. Three enterprise accounts ($2.1M ARR) are flagged at-risk for churn. Without resolving the AI vendor procurement this week, the 10,000-license goal is not achievable by December 31.
+  </div>
+  <div class="narrative-actions">
+    <span class="action-pill red">🚨 Escalate AI vendor procurement — blocks 40% of sellers</span>
+    <span class="action-pill yellow">⚠️ Activate retention playbook — $2.1M ARR at-risk</span>
+    <span class="action-pill blue">📋 Review CAC trend in weekly ops — cycle time rising</span>
+  </div>
+</div>
+
+<!-- ══ ARR SNAPSHOT ══════════════════════════════════════ -->
+<div class="sec">📊 ARR Snapshot</div>
+<div class="kpi-grid">
+
+  <div class="kpi-card yellow">
+    <div class="kpi-label">Current ARR</div>
+    <div class="kpi-val yellow">$62M</div>
+    <div class="kpi-sub">Target: $100M by Dec 31, 2026</div>
+    <div class="kpi-delta up">▲ +$9.9M this quarter</div>
+    <div class="kpi-bar"><div class="kpi-fill" id="arr-bar" style="width:62%;background:linear-gradient(90deg,var(--yellow),var(--orange));"></div></div>
+  </div>
+
+  <div class="kpi-card yellow">
+    <div class="kpi-label">NRR — Net Revenue Retention</div>
+    <div class="kpi-val yellow">108%</div>
+    <div class="kpi-sub">Target: 115% &nbsp;·&nbsp; Expansion + Churn net</div>
+    <div class="kpi-delta down">▼ -7pts vs target</div>
+    <div class="kpi-bar"><div class="kpi-fill" style="width:74%;background:var(--yellow);"></div></div>
+  </div>
+
+  <div class="kpi-card red">
+    <div class="kpi-label">Churned ARR (QTD)</div>
+    <div class="kpi-val red">$1.8M</div>
+    <div class="kpi-sub">3 accounts · $2.1M pipeline at-risk</div>
+    <div class="kpi-delta down">▼ +$400K vs last quarter</div>
+    <div class="kpi-bar"><div class="kpi-fill" style="width:30%;background:var(--red);"></div></div>
+  </div>
+
+  <div class="kpi-card green">
+    <div class="kpi-label">License Attainment</div>
+    <div class="kpi-val green">3,240</div>
+    <div class="kpi-sub">Goal: 10,000 licenses &nbsp;·&nbsp; 32% of target</div>
+    <div class="kpi-delta up">▲ +680 this month</div>
+    <div class="kpi-bar"><div class="kpi-fill" id="lic-bar" style="width:0%;background:linear-gradient(90deg,var(--green),var(--cyan));"></div></div>
+  </div>
+
+</div>
+
+<!-- ══ ARR GROWTH WATERFALL ══════════════════════════════ -->
+<div class="sec">💧 ARR Waterfall — Q2 FY26 Movement</div>
+<div class="waterfall">
+
+  <div class="wf-card new-arr">
+    <div class="wf-label">New ARR</div>
+    <div class="wf-amt">+$8.5M</div>
+    <div class="wf-sub">New logos &amp; new licenses<br>directly generated</div>
+    <div class="wf-bar-wrap"><div class="wf-bar" style="width:100%;"></div></div>
+  </div>
+  <div class="wf-sep">+</div>
+
+  <div class="wf-card exp-arr">
+    <div class="wf-label">Expansion ARR</div>
+    <div class="wf-amt">+$3.2M</div>
+    <div class="wf-sub">Upsell &amp; cross-sell<br>existing accounts</div>
+    <div class="wf-bar-wrap"><div class="wf-bar" style="width:38%;"></div></div>
+  </div>
+  <div class="wf-sep">−</div>
+
+  <div class="wf-card churn">
+    <div class="wf-label">Churned ARR</div>
+    <div class="wf-amt">−$1.8M</div>
+    <div class="wf-sub">Lost accounts &amp;<br>downgrades</div>
+    <div class="wf-bar-wrap"><div class="wf-bar" style="width:21%;"></div></div>
+  </div>
+  <div class="wf-sep" style="font-size:26px;color:var(--green);">=</div>
+
+  <div class="wf-card net-arr">
+    <div class="wf-label">Net New ARR</div>
+    <div class="wf-amt">+$9.9M</div>
+    <div class="wf-sub">Required run rate:<br>$12M/quarter</div>
+    <div class="wf-bar-wrap"><div class="wf-bar" style="width:82%;background:linear-gradient(90deg,var(--green),var(--cyan));"></div></div>
+  </div>
+
+</div>
+
+<!-- ══ UNIT ECONOMICS ════════════════════════════════════ -->
+<div class="sec">⚙️ Unit Economics</div>
+<div class="ue-grid">
+
+  <div class="ue-card">
+    <div class="ue-label">CAC — Customer Acquisition Cost</div>
+    <div class="ue-val">$4,200</div>
+    <div class="ue-target">Target: &lt;$3,800</div>
+    <div class="ue-status bad">▲ Trending up · sales cycle lengthening</div>
+  </div>
+
+  <div class="ue-card">
+    <div class="ue-label">LTV — Lifetime Value (avg)</div>
+    <div class="ue-val">$18,500</div>
+    <div class="ue-target">Based on 36-month avg tenure · $514/mo ACV</div>
+    <div class="ue-status good">Stable</div>
+  </div>
+
+  <div class="ue-card">
+    <div class="ue-label">LTV : CAC Ratio</div>
+    <div class="ue-val">4.4×</div>
+    <div class="ue-target">Target: 5.0× &nbsp;·&nbsp; Healthy threshold: 3×</div>
+    <div class="ue-status warn">▼ Below target · CAC rising faster than LTV</div>
+  </div>
+
+  <div class="ue-card">
+    <div class="ue-label">CAC Payback Period</div>
+    <div class="ue-val">14 mo</div>
+    <div class="ue-target">Target: &lt;12 months</div>
+    <div class="ue-status warn">2 months over target</div>
+  </div>
+
+</div>
+
+<!-- ══ LEADING INDICATORS ════════════════════════════════ -->
+<div class="sec">📡 Leading Indicators</div>
+<div class="lead-grid">
+
+  <div class="lead-card">
+    <div class="lead-label">Funnel Conversion</div>
+    <div class="lead-val" style="color:var(--red);">14.2%</div>
+    <div class="lead-target">Target: 20% &nbsp;·&nbsp; Top-of-funnel → closed-won</div>
+    <div class="trend down">▼ -2.1pts vs last quarter · AI block impact</div>
+  </div>
+
+  <div class="lead-card">
+    <div class="lead-label">AI Tool Adoption</div>
+    <div class="lead-val" style="color:var(--yellow);">52%</div>
+    <div class="lead-target">Target: 80% of sellers live on AI tooling</div>
+    <div class="trend flat">→ Flat · 40% blocked on procurement</div>
+  </div>
+
+  <div class="lead-card">
+    <div class="lead-label">Avg Customer Interaction</div>
+    <div class="lead-val" style="color:var(--yellow);">8.3 min</div>
+    <div class="lead-target">Target: &lt;6 min &nbsp;·&nbsp; per qualified conversation</div>
+    <div class="trend flat">→ Marginal improvement (+0.2 min last week)</div>
+  </div>
+
+  <div class="lead-card">
+    <div class="lead-label">Lead Quality Score</div>
+    <div class="lead-val" style="color:var(--yellow);">68 / 100</div>
+    <div class="lead-target">Target: 80+ &nbsp;·&nbsp; MQL signal strength</div>
+    <div class="trend up">▲ +4pts vs last quarter · improving</div>
+  </div>
+
+</div>
+
+<!-- ══ SUB-GOALS ══════════════════════════════════════════ -->
+<div class="sec">🎯 Sub-Programs</div>
+<div class="sub-grid">
+
+  <div class="sub-card">
+    <div class="sub-hd">
+      <div>
+        <div class="sub-nm">Lead Management</div>
+        <div class="sub-tag yellow">AT RISK</div>
+      </div>
+      <div class="rag yellow"></div>
+    </div>
+    <ul class="sub-ms">
+      <li><div class="ms-dot" style="background:var(--green);"></div>Pipeline volume: 12,400 MQLs (target 14,000)</li>
+      <li><div class="ms-dot" style="background:var(--yellow);"></div>Lead quality score 68/100 — improving but below 80 target</li>
+      <li><div class="ms-dot" style="background:var(--red);"></div>ICP scoring model not yet deployed — blocked on data eng</li>
+      <li><div class="ms-dot" style="background:var(--green);"></div>Lead SLA compliance: 91% responded within 4 hours</li>
+    </ul>
+  </div>
+
+  <div class="sub-card">
+    <div class="sub-hd">
+      <div>
+        <div class="sub-nm">Seller Experience</div>
+        <div class="sub-tag green">ON TRACK</div>
+      </div>
+      <div class="rag green"></div>
+    </div>
+    <ul class="sub-ms">
+      <li><div class="ms-dot" style="background:var(--green);"></div>Unified seller dashboard live for 100% of AEs</li>
+      <li><div class="ms-dot" style="background:var(--green);"></div>Next-best-action engine in production — 52% of sellers</li>
+      <li><div class="ms-dot" style="background:var(--yellow);"></div>Deal coaching AI in beta — 12 sellers piloting</li>
+      <li><div class="ms-dot" style="background:var(--green);"></div>Rep onboarding time: 8 weeks → 5 weeks (target 4)</li>
+    </ul>
+  </div>
+
+  <div class="sub-card">
+    <div class="sub-hd">
+      <div>
+        <div class="sub-nm">AI for Sales</div>
+        <div class="sub-tag red">OFF TRACK</div>
+      </div>
+      <div class="rag red"></div>
+    </div>
+    <ul class="sub-ms">
+      <li><div class="ms-dot" style="background:var(--red);"></div>AI tooling vendor blocked — procurement approval pending 3 weeks</li>
+      <li><div class="ms-dot" style="background:var(--red);"></div>40% of sellers (84 reps) without AI tools — direct ARR impact</li>
+      <li><div class="ms-dot" style="background:var(--yellow);"></div>Interim manual workflows in place — reducing gap partially</li>
+      <li><div class="ms-dot" style="background:var(--green);"></div>AI training curriculum complete — ready to deploy on unlock</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ══ RISKS & ESCALATIONS ═══════════════════════════════ -->
+<div class="sec">⚠️ Risks &amp; Escalations</div>
+<div class="risks-grid">
+
+  <div class="risk-card">
+    <span class="risk-sev high">HIGH</span>
+    <div>
+      <div class="risk-title">AI vendor procurement blocked — week 3</div>
+      <div class="risk-desc">84 sellers (40%) operating without AI tools. Directly suppressing funnel conversion by ~5–6pts. Escalated to VP Sales and VP Procurement. Decision needed by May 30.</div>
+    </div>
+  </div>
+
+  <div class="risk-card">
+    <span class="risk-sev high">HIGH</span>
+    <div>
+      <div class="risk-title">$2.1M ARR at churn risk — 3 enterprise accounts</div>
+      <div class="risk-desc">Three accounts signaled intent-to-cancel. CS retention playbook activated. Executive sponsor engagement requested. Decision window: 2 weeks before contractual notice.</div>
+    </div>
+  </div>
+
+  <div class="risk-card">
+    <span class="risk-sev med">MED</span>
+    <div>
+      <div class="risk-title">CAC trending up — $4,200 vs $3,800 target</div>
+      <div class="risk-desc">Longer sales cycles driving up cost per acquisition. Root cause: sellers spending more time on manual prep without AI tooling. Resolves if AI block clears by June.</div>
+    </div>
+  </div>
+
+  <div class="risk-card">
+    <span class="risk-sev med">MED</span>
+    <div>
+      <div class="risk-title">ICP scoring model delayed — lead quality impact</div>
+      <div class="risk-desc">Data engineering dependency pushing ICP model launch to Q3. Lead quality score (68/100) will stall without it. MQL-to-SQL conversion remains below target until model ships.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════ -->
+<div class="footer">
+  Generated by the <a href="https://goyalsandeep2k.github.io/program-health-dashboard/" target="_blank">Sales Program Health skill</a>
+  &nbsp;·&nbsp; <a href="https://github.com/goyalsandeep2k/program-health-dashboard" target="_blank">GitHub</a>
+  &nbsp;·&nbsp; <a href="https://sandeepgoyal.org" target="_blank">sandeepgoyal.org</a>
+</div>
+
+<script>
+  // Animate progress bars on load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const arrBar = document.getElementById('arr-bar');
+      const licBar = document.getElementById('lic-bar');
+      if (arrBar) arrBar.style.transition = 'width 1.2s ease';
+      if (licBar) { licBar.style.transition = 'width 1.4s ease'; licBar.style.width = '32%'; }
+    }, 200);
+  });
+</script>
+</body>
+</html>
