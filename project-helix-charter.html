@@ -229,7 +229,26 @@
       background:var(--surface); border:1px solid var(--border);
       border-radius:6px; padding:4px 12px;
     }
+
+    /* ── KPI SCORECARD CHARTS ────────────────────────── */
+    .kpi-sc-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px;
+    }
+    .kcc {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:12px; padding:16px 18px;
+    }
+    .kcc-lbl { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+    .kcc-nums { display:flex; align-items:baseline; gap:7px; margin-bottom:10px; flex-wrap:wrap; }
+    .kcc-actual { font-size:26px; font-weight:900; letter-spacing:-0.5px; }
+    .kcc-c-green  { color:var(--green); }
+    .kcc-c-yellow { color:var(--yellow); }
+    .kcc-c-red    { color:var(--red); }
+    .kcc-sep { font-size:10px; color:var(--muted); }
+    .kcc-tgt { font-size:11px; color:var(--muted); font-weight:600; }
+    .kcc-chart-wrap { position:relative; height:90px; }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -259,14 +278,72 @@
     Pioneer next-generation Intuit sales with <strong>strategic predictive and generative AI deployment</strong> — delivering intelligent lead management, empowered sellers, automated engagement, and accelerated high-value growth across Mid-Market and SMB.
     Scale IES as the AI-powered ERP alternative for complex Mid-Market businesses through <strong>unified sales motions, AI-native tooling, and a durable Salesforce CXM foundation</strong>.
   </div>
-  <div class="mission-kpis">
-    <div class="mkpi"><div class="mkpi-val">366%</div><div class="mkpi-lbl">IES Contract Growth Target</div></div>
-    <div class="mkpi"><div class="mkpi-val">2.4K→11.3K</div><div class="mkpi-lbl">New Contracts</div></div>
-    <div class="mkpi"><div class="mkpi-val">30%→50%+</div><div class="mkpi-lbl">Seller Productivity</div></div>
-    <div class="mkpi"><div class="mkpi-val">46%→80%</div><div class="mkpi-lbl">4+ Feature Adoption (30 days)</div></div>
-    <div class="mkpi"><div class="mkpi-val">72%→85%</div><div class="mkpi-lbl">tNPS Target</div></div>
-    <div class="mkpi"><div class="mkpi-val">+10–20%</div><div class="mkpi-lbl">Win Rate Improvement</div></div>
+</div>
+
+<!-- ══ KPI SCORECARD ════════════════════════════════════ -->
+<div class="sec">📈 KPI Scorecard — Actuals vs. Targets · Jan–May 2026</div>
+<div class="kpi-sc-grid">
+
+  <div class="kcc">
+    <div class="kcc-lbl">IES Contract Growth</div>
+    <div class="kcc-nums">
+      <span class="kcc-actual kcc-c-green">220%</span>
+      <span class="kcc-sep">actual &nbsp;—&nbsp;</span>
+      <span class="kcc-tgt">366% target</span>
+    </div>
+    <div class="kcc-chart-wrap"><canvas id="ch-growth"></canvas></div>
   </div>
+
+  <div class="kcc">
+    <div class="kcc-lbl">New Contracts · Monthly</div>
+    <div class="kcc-nums">
+      <span class="kcc-actual kcc-c-yellow">560</span>
+      <span class="kcc-sep">actual &nbsp;—&nbsp;</span>
+      <span class="kcc-tgt">941 / mo target</span>
+    </div>
+    <div class="kcc-chart-wrap"><canvas id="ch-contracts"></canvas></div>
+  </div>
+
+  <div class="kcc">
+    <div class="kcc-lbl">Seller Productivity</div>
+    <div class="kcc-nums">
+      <span class="kcc-actual kcc-c-yellow">30%</span>
+      <span class="kcc-sep">actual &nbsp;—&nbsp;</span>
+      <span class="kcc-tgt">50% target</span>
+    </div>
+    <div class="kcc-chart-wrap"><canvas id="ch-productivity"></canvas></div>
+  </div>
+
+  <div class="kcc">
+    <div class="kcc-lbl">4+ Feature Adoption · 30d</div>
+    <div class="kcc-nums">
+      <span class="kcc-actual kcc-c-yellow">46%</span>
+      <span class="kcc-sep">actual &nbsp;—&nbsp;</span>
+      <span class="kcc-tgt">80% target</span>
+    </div>
+    <div class="kcc-chart-wrap"><canvas id="ch-adoption"></canvas></div>
+  </div>
+
+  <div class="kcc">
+    <div class="kcc-lbl">tNPS</div>
+    <div class="kcc-nums">
+      <span class="kcc-actual kcc-c-green">72</span>
+      <span class="kcc-sep">actual &nbsp;—&nbsp;</span>
+      <span class="kcc-tgt">85 target</span>
+    </div>
+    <div class="kcc-chart-wrap"><canvas id="ch-tnps"></canvas></div>
+  </div>
+
+  <div class="kcc">
+    <div class="kcc-lbl">Win Rate Improvement</div>
+    <div class="kcc-nums">
+      <span class="kcc-actual kcc-c-yellow">+10%</span>
+      <span class="kcc-sep">actual &nbsp;—&nbsp;</span>
+      <span class="kcc-tgt">+20% target</span>
+    </div>
+    <div class="kcc-chart-wrap"><canvas id="ch-winrate"></canvas></div>
+  </div>
+
 </div>
 
 <!-- ══ PROGRAM PILLARS ═══════════════════════════════════ -->
@@ -656,5 +733,88 @@
   <div class="redacted-notice">🔒 Names redacted — structure and content sanitized for external sharing</div>
 </div>
 
+<script>
+(function() {
+  const MONTHS   = ['Jan','Feb','Mar','Apr','May'];
+  const BAR_CLR  = 'rgba(29,111,206,0.72)';
+  const BAR_BDR  = '#1d6fce';
+  const TGT_CLR  = '#dc2626';
+  const GRID_CLR = '#f1f5f9';
+  const TICK_CLR = '#9ca3af';
+
+  Chart.defaults.font.family = "'Segoe UI', Arial, sans-serif";
+
+  function mkChart(id, actuals, target, suffix) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const tgtArr = Array(MONTHS.length).fill(target);
+    new Chart(el, {
+      type: 'bar',
+      data: {
+        labels: MONTHS,
+        datasets: [
+          {
+            label: 'Actual',
+            data: actuals,
+            backgroundColor: BAR_CLR,
+            borderColor: BAR_BDR,
+            borderWidth: 1,
+            borderRadius: 3,
+            order: 2
+          },
+          {
+            label: 'Target',
+            data: tgtArr,
+            type: 'line',
+            borderColor: TGT_CLR,
+            borderWidth: 2,
+            borderDash: [6, 3],
+            pointRadius: 0,
+            fill: false,
+            tension: 0,
+            order: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                const v = ctx.parsed.y;
+                const pfx = (ctx.dataset.label === 'Target') ? 'Target: ' : 'Actual: ';
+                return pfx + (suffix === '$' ? '' : '') + v + suffix;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            border: { display: false },
+            ticks: { font: { size: 9 }, color: TICK_CLR }
+          },
+          y: {
+            grid: { color: GRID_CLR, lineWidth: 1 },
+            border: { display: false },
+            ticks: { font: { size: 9 }, color: TICK_CLR, maxTicksLimit: 4 }
+          }
+        }
+      }
+    });
+  }
+
+  // Actuals: Jan–May 2026 · Target: annual/steady-state goal
+  mkChart('ch-growth',      [45,  88,  140, 185, 220], 366, '%');
+  mkChart('ch-contracts',   [380, 420, 460, 580, 560], 941, '');
+  mkChart('ch-productivity',[26,  27,  28,  29,  30],   50, '%');
+  mkChart('ch-adoption',    [38,  40,  42,  44,  46],   80, '%');
+  mkChart('ch-tnps',        [68,  69,  70,  71,  72],   85, '');
+  mkChart('ch-winrate',     [5,   6,   7,   8,   10],   20, '%');
+})();
+</script>
 </body>
 </html>
