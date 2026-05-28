@@ -6,17 +6,17 @@
   <title>Program Health Dashboard — Kaseya Sales Transformation</title>
   <style>
     :root {
-      --bg:       #080E1B;
-      --surface:  #0F172A;
-      --surface2: #1E293B;
-      --border:   #1E2D45;
-      --text:     #E2E8F0;
-      --muted:    #64748B;
-      --blue:     #3B82F6;
-      --green:    #22C55E;
-      --yellow:   #F59E0B;
-      --red:      #EF4444;
-      --cyan:     #06B6D4;
+      --bg:       #ffffff;
+      --surface:  #f8fafc;
+      --surface2: #f1f5f9;
+      --border:   #e2e8f0;
+      --text:     #111827;
+      --muted:    #6b7280;
+      --blue:     #1d6fce;
+      --green:    #16a34a;
+      --yellow:   #d97706;
+      --red:      #dc2626;
+      --cyan:     #0891b2;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
@@ -31,16 +31,16 @@
     .header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       padding-bottom: 20px;
       border-bottom: 1px solid var(--border);
       margin-bottom: 22px;
     }
-    .prog-name  { font-size:24px; font-weight:800; color:white; letter-spacing:-0.3px; }
+    .prog-name  { font-size:24px; font-weight:800; color:#111827; letter-spacing:-0.3px; }
     .prog-name span { color: var(--blue); }
     .prog-sub   { font-size:13px; color:var(--muted); margin-top:5px; }
     .header-right { text-align:right; }
-    .meta { font-size:12px; color:var(--muted); line-height:1.9; margin-top:8px; }
+    .meta { font-size:12px; color:var(--muted); line-height:1.9; margin-top:8px; white-space:nowrap; }
 
     /* ── STATUS BADGE ───────────────────────────── */
     .badge {
@@ -55,12 +55,12 @@
 
     /* ── MISSION ────────────────────────────────── */
     .mission {
-      background: linear-gradient(135deg,#0D1E38,#0A1F14);
+      background: linear-gradient(135deg,#eef4ff,#f0fdf4);
       border:1px solid var(--border); border-left:4px solid var(--blue);
       border-radius:10px; padding:16px 22px; margin-bottom:22px;
     }
     .mission-lbl { font-size:10px; font-weight:700; letter-spacing:1.5px; color:var(--blue); text-transform:uppercase; margin-bottom:6px; }
-    .mission-txt { font-size:13.5px; color:#CBD5E1; line-height:1.65; }
+    .mission-txt { font-size:13.5px; color:#374151; line-height:1.65; }
 
     /* ── SECTION TITLE ──────────────────────────── */
     .sec {
@@ -78,18 +78,18 @@
 
     /* ── LAGGING INDICATOR ──────────────────────── */
     .kpi-card {
-      background:linear-gradient(145deg,#0B1A2E,#0D2040);
-      border:1px solid #1A3A6B; border-radius:14px;
+      background:linear-gradient(145deg,#f0f7ff,#e8f4fe);
+      border:1px solid var(--border); border-radius:14px;
       padding:22px 16px; text-align:center; position:relative; overflow:hidden;
     }
     .kpi-card::before { content:''; position:absolute; top:0;left:0;right:0; height:3px; background:linear-gradient(90deg,var(--blue),var(--cyan)); }
     .kpi-lbl { font-size:10px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:var(--cyan); margin-bottom:10px; }
-    .kpi-num { font-size:40px; font-weight:900; color:white; letter-spacing:-1px; line-height:1; }
+    .kpi-num { font-size:40px; font-weight:900; color:#111827; letter-spacing:-1px; line-height:1; }
     .kpi-tgt { font-size:12px; color:var(--muted); margin-top:4px; }
     .kpi-tgt strong { color:var(--text); }
     .ring-wrap { position:relative; width:100px; height:100px; margin:14px auto; }
     .ring-wrap svg { transform:rotate(-90deg); }
-    .ring-bg   { fill:none; stroke:#1E3A5F; stroke-width:10; }
+    .ring-bg   { fill:none; stroke:#e2e8f0; stroke-width:10; }
     .ring-fill { fill:none; stroke:url(#rg); stroke-width:10; stroke-linecap:round; transition:stroke-dashoffset 1.2s ease; }
     .ring-num  { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:17px; font-weight:800; color:var(--cyan); }
 
@@ -106,7 +106,7 @@
     .metric-hd { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
     .metric-nm { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
     .metric-ico { font-size:17px; }
-    .metric-val { font-size:26px; font-weight:800; color:white; letter-spacing:-.5px; }
+    .metric-val { font-size:26px; font-weight:800; color:#111827; letter-spacing:-.5px; }
     .metric-val small { font-size:14px; color:var(--muted); font-weight:400; }
     .metric-tgt { font-size:11px; color:var(--muted); margin-top:1px; }
     .metric-tgt strong { color:var(--text); }
@@ -144,13 +144,13 @@
     .sg-card.red::before    { background:var(--red); }
     .sg-hd { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
     .sg-ico { font-size:18px; }
-    .sg-nm  { font-size:14px; font-weight:700; color:white; margin-top:2px; }
+    .sg-nm  { font-size:14px; font-weight:700; color:#111827; margin-top:2px; }
     .sg-desc { font-size:11.5px; color:var(--muted); line-height:1.55; margin-bottom:12px; }
     .ms-list { list-style:none; }
     .ms-item {
       display:flex; align-items:center; gap:9px;
       padding:7px 0; border-bottom:1px solid var(--border);
-      font-size:11.5px; color:#94A3B8;
+      font-size:11.5px; color:#374151;
     }
     .ms-item:last-child { border-bottom:none; }
     .ms-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
@@ -176,8 +176,8 @@
     .risk-lv.high   { background:rgba(239,68,68,.2);  color:var(--red); }
     .risk-lv.med    { background:rgba(245,158,11,.2); color:var(--yellow); }
     .risk-lv.urgent { background:rgba(239,68,68,.25); color:#FF6B6B; }
-    .risk-txt { font-size:11.5px; color:#94A3B8; line-height:1.5; }
-    .risk-txt strong { color:white; }
+    .risk-txt { font-size:11.5px; color:#374151; line-height:1.5; }
+    .risk-txt strong { color:#111827; }
 
     /* ── FOOTER ─────────────────────────────────── */
     .footer {
@@ -213,7 +213,7 @@
   <div class="mission-lbl">🎯 Program Mission</div>
   <div class="mission-txt">
     Transform Kaseya's fragmented sales motion into an AI-powered, data-driven engine. Equip every seller with intelligent tools, high-quality leads, and streamlined workflows — enabling the team to close
-    <strong style="color:white;">10,000 Kaseya 365 licenses by Dec 31, 2026</strong> while reducing average customer interaction time and increasing top-of-funnel conversion rate.
+    <strong style="color:#111827;">10,000 Kaseya 365 licenses by Dec 31, 2026</strong> while reducing average customer interaction time and increasing top-of-funnel conversion rate.
   </div>
 </div>
 
