@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaseya Strategic Priority Stack — Q2 FY26</title>
+  <style>
+    :root {
+      --bg:       #ffffff;
+      --surface:  #f8fafc;
+      --surface2: #f1f5f9;
+      --border:   #e2e8f0;
+      --text:     #111827;
+      --muted:    #6b7280;
+      --blue:     #1d6fce;
+      --green:    #16a34a;
+      --yellow:   #d97706;
+      --red:      #dc2626;
+      --cyan:     #0891b2;
+      --purple:   #7c3aed;
+      --orange:   #ea580c;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      padding: 28px 32px; min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding-bottom:20px; border-bottom:1px solid var(--border); margin-bottom:22px;
+    }
+    .prog-name { font-size:24px; font-weight:800; color:#111827; letter-spacing:-.3px; }
+    .prog-name span { color:var(--blue); }
+    .prog-sub  { font-size:13px; color:var(--muted); margin-top:5px; }
+    .header-right { text-align:right; }
+    .meta { font-size:12px; color:var(--muted); line-height:1.9; margin-top:8px; white-space:nowrap; }
+    .badge {
+      display:inline-flex; align-items:center; gap:6px; padding:5px 13px;
+      border-radius:20px; font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase;
+    }
+    .badge.blue   { background:rgba(59,130,246,.15);  color:var(--blue);   border:1px solid rgba(59,130,246,.3); }
+    .badge.orange { background:rgba(234,88,12,.15);   color:var(--orange); border:1px solid rgba(234,88,12,.3); }
+    .dot { width:7px; height:7px; border-radius:50%; background:currentColor; }
+
+    /* ── TOP BETS BANNER ── */
+    .top-bets {
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-bottom:22px;
+    }
+    .bet-card {
+      border:1px solid var(--border); border-radius:12px; padding:16px 18px;
+      border-top:4px solid var(--blue);
+    }
+    .bet-card.gold-border   { border-top-color: #F59E0B; }
+    .bet-card.purple-border { border-top-color: var(--purple); }
+    .bet-card.green-border  { border-top-color: var(--green); }
+    .bet-icon  { font-size:22px; margin-bottom:8px; }
+    .bet-title { font-size:13.5px; font-weight:800; color:#111827; margin-bottom:4px; }
+    .bet-sub   { font-size:11.5px; color:var(--muted); line-height:1.5; }
+    .bet-tag   {
+      display:inline-block; margin-top:8px;
+      font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px;
+      background:rgba(29,111,206,.1); color:var(--blue); border:1px solid rgba(29,111,206,.2);
+    }
+
+    /* ── MISSION BANNER ── */
+    .mission {
+      background:linear-gradient(135deg,#eef4ff,#f0fdf4);
+      border:1px solid var(--border); border-left:4px solid var(--blue);
+      border-radius:10px; padding:16px 22px; margin-bottom:22px;
+    }
+    .mission-lbl { font-size:10px; font-weight:700; letter-spacing:1.5px; color:var(--blue); text-transform:uppercase; margin-bottom:6px; }
+    .mission-txt { font-size:13.5px; color:#374151; line-height:1.65; }
+
+    /* ── RANKING RULE STRIP ── */
+    .rank-strip {
+      background:var(--surface); border:1px solid var(--border); border-left:4px solid var(--green);
+      border-radius:10px; padding:14px 20px; margin-bottom:22px;
+      display:flex; align-items:center; gap:24px; flex-wrap:wrap;
+    }
+    .rank-strip-label {
+      display:flex; align-items:center; gap:10px;
+      font-size:13.5px; font-weight:700; color:#111827; white-space:nowrap;
+    }
+    .rank-strip-label strong { color:var(--green); }
+    .rank-strip-icon { font-size:20px; }
+    .rank-chips { display:flex; align-items:center; gap:10px; flex-wrap:wrap; flex:1; }
+    .rank-chip {
+      display:flex; align-items:center; gap:8px;
+      background:rgba(34,197,94,.07); border:1px solid rgba(34,197,94,.2);
+      border-radius:8px; padding:8px 14px;
+    }
+    .chip-icon  { font-size:17px; }
+    .chip-title { font-size:12px; font-weight:700; color:#111827; }
+    .chip-sub   { font-size:10.5px; color:var(--muted); margin-top:1px; }
+    .chip-sep   { font-size:18px; color:var(--muted); font-weight:300; padding:0 2px; }
+    .chip-note  { font-size:10.5px; color:var(--muted); margin-left:auto; text-align:right; white-space:nowrap; }
+
+    /* ── SECTION TITLE ── */
+    .sec {
+      font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase;
+      color:var(--muted); margin-bottom:14px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .sec::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* ── LEGEND ── */
+    .legend { display:flex; gap:20px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+    .leg-item { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted); }
+    .leg-dot  { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+
+    /* ── TABLE ── */
+    .tbl-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    thead tr { background:var(--surface2); }
+    th {
+      padding:10px 14px; text-align:left; font-size:10px; font-weight:700;
+      letter-spacing:1px; text-transform:uppercase; color:var(--muted);
+      border-bottom:2px solid var(--border); white-space:nowrap;
+    }
+    th.center, td.center { text-align:center; }
+    th.right,  td.right  { text-align:right; }
+    tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
+    tbody tr:hover { background:rgba(59,130,246,.05); }
+    td { padding:11px 14px; vertical-align:middle; }
+
+    /* Bet alignment column */
+    .bet-align {
+      font-size:10px; font-weight:700; padding:3px 8px; border-radius:10px; white-space:nowrap;
+      display:inline-block;
+    }
+    .bet-k365   { background:rgba(245,158,11,.15); color:#B45309; border:1px solid rgba(245,158,11,.3); }
+    .bet-ai     { background:rgba(124,58,237,.15);  color:var(--purple); border:1px solid rgba(124,58,237,.3); }
+    .bet-cyber  { background:rgba(22,163,74,.15);   color:var(--green);  border:1px solid rgba(22,163,74,.3); }
+    .bet-multi  { background:rgba(8,145,178,.15);   color:var(--cyan);   border:1px solid rgba(8,145,178,.3); }
+
+    /* Rank badge */
+    .rank {
+      width:30px; height:30px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:12px; font-weight:800; flex-shrink:0;
+    }
+    .rank.gold   { background:linear-gradient(135deg,#B8860B,#FFD700); color:#1A1200; }
+    .rank.silver { background:linear-gradient(135deg,#6B7280,#9CA3AF); color:#0F172A; }
+    .rank.bronze { background:linear-gradient(135deg,#78350F,#CD7F32); color:white; }
+    .rank.mid    { background:var(--surface2); border:1px solid var(--border); color:#374151; font-size:11px; }
+    .rank.low    { background:var(--surface2); border:1px solid var(--border); color:#6b7280; font-size:11px; }
+
+    /* Program cell */
+    .prog-nm   { font-size:13px; font-weight:600; color:#111827; }
+    .prog-desc { font-size:11px; color:var(--muted); margin-top:2px; line-height:1.35; }
+
+    /* Domain badge */
+    .dom {
+      font-size:10px; font-weight:700; padding:3px 9px; border-radius:12px; white-space:nowrap;
+    }
+    .dom.feat  { background:rgba(59,130,246,.15);  color:#3B82F6; border:1px solid rgba(59,130,246,.25); }
+    .dom.rel   { background:rgba(239,68,68,.15);   color:#EF4444; border:1px solid rgba(239,68,68,.25); }
+    .dom.plat  { background:rgba(168,85,247,.15);  color:#A855F7; border:1px solid rgba(168,85,247,.25); }
+    .dom.sec   { background:rgba(22,163,74,.15);   color:#16a34a; border:1px solid rgba(22,163,74,.25); }
+    .dom.ai    { background:rgba(124,58,237,.15);  color:#7c3aed; border:1px solid rgba(124,58,237,.25); }
+
+    /* Goal cell */
+    .goal-kpi  { font-size:11.5px; font-weight:700; color:#111827; margin-bottom:3px; }
+    .goal-txt  { font-size:11px; color:var(--muted); line-height:1.4; max-width:230px; }
+
+    /* Impact column */
+    td.rev-cell {
+      background:rgba(34,197,94,.04);
+      border-left:2px solid rgba(34,197,94,.2);
+    }
+    .rev-amt  { font-size:18px; font-weight:900; color:var(--green); letter-spacing:-.5px; }
+    .rev-type { font-size:10.5px; color:var(--muted); margin-top:2px; line-height:1.3; }
+    .rev-bar  { height:4px; background:var(--surface2); border-radius:2px; margin-top:7px; overflow:hidden; }
+    .rev-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--green),var(--cyan)); }
+
+    /* DRI cell */
+    .dri-wrap   { display:flex; align-items:center; gap:10px; }
+    .dri-avatar {
+      width:34px; height:34px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:11px; font-weight:800; flex-shrink:0;
+    }
+    .dri-name  { font-size:13px; font-weight:600; color:#111827; }
+    .dri-title { font-size:10.5px; color:var(--muted); margin-top:1px; line-height:1.3; max-width:160px; }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align:center; padding-top:18px; margin-top:24px;
+      border-top:1px solid var(--border); font-size:11px; color:var(--muted);
+    }
+    .footer a { color:var(--blue); text-decoration:none; }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════ -->
+<div class="header">
+  <div>
+    <div class="prog-name">Kaseya Strategic Priority Stack <span>· FY26 Top Bets</span></div>
+    <div class="prog-sub">3 Strategic Pillars · 12 Programs · Ranked by MSP Business Impact — ARR Growth · Cost Reduction · Compliance Revenue Unlock</div>
+  </div>
+  <div class="header-right">
+    <span class="badge blue"><span class="dot"></span> Q2 FY26 Active</span>
+    <div class="meta">
+      Owner: Director, Technical Program Management<br>
+      Sponsor: CTO &amp; VP Product<br>
+      Updated: May 31, 2026<br>
+      Cadence: Quarterly Review
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOP BETS CARDS ══════════════════════════════════════════ -->
+<div class="top-bets">
+  <div class="bet-card gold-border">
+    <div class="bet-icon">📦</div>
+    <div class="bet-title">Kaseya 365 Bundle</div>
+    <div class="bet-sub">All-inclusive subscription combining RMM, endpoint backup, ransomware protection, and EDR in a single per-user price. Eliminates tool sprawl and license negotiation overhead for MSPs.</div>
+    <span class="bet-tag">Flagship · #1 Revenue Driver</span>
+  </div>
+  <div class="bet-card purple-border">
+    <div class="bet-icon">🤖</div>
+    <div class="bet-title">Agentic &amp; Generative AI</div>
+    <div class="bet-sub">AI across Datto RMM (conversational root-cause, visual backup verification), Autotask PSA (AI ticket triage &amp; routing), and agentic automation to eliminate L1 technician labor costs.</div>
+    <span class="bet-tag" style="background:rgba(124,58,237,.1);color:var(--purple);border-color:rgba(124,58,237,.2);">AI-First · Admin Labor Reduction</span>
+  </div>
+  <div class="bet-card green-border">
+    <div class="bet-icon">🛡️</div>
+    <div class="bet-title">Unified Cyber Resilience</div>
+    <div class="bet-sub">One portal for on-prem, SaaS, endpoint &amp; cloud backup via Kaseya Intelligence. Hyper-V agentless backup, SaaS Alerts + INKY phishing defense, and CMMC compliance readiness for MSP partners.</div>
+    <span class="bet-tag" style="background:rgba(22,163,74,.1);color:var(--green);border-color:rgba(22,163,74,.2);">Compliance Unlock · Security Revenue</span>
+  </div>
+</div>
+
+<!-- ══ MISSION BANNER ══════════════════════════════════════════ -->
+<div class="mission">
+  <div class="mission-lbl">🧭 Strategic Intent — How Kaseya Wins in FY26</div>
+  <div class="mission-txt">
+    Kaseya's competitive strategy centers on <strong style="color:#111827;">reducing tool sprawl and administrative labor costs for MSPs</strong> — achieving this through the Kaseya 365 all-inclusive bundle, AI automation across the RMM/PSA stack, and a unified cyber resilience platform.
+    Programs are ranked by <strong style="color:#111827;">MSP Business Impact</strong>: direct ARR growth from bundle adoption, cost savings unlocked for MSP partners, and revenue unblocked by compliance certifications.
+    All three pillars carry <strong style="color:#111827;">dedicated engineering capacity floors</strong> with no program deprioritized below minimum viable staffing.
+  </div>
+</div>
+
+<!-- ══ RANKING RULE STRIP ══════════════════════════════════════ -->
+<div class="rank-strip">
+  <div class="rank-strip-label">
+    <span class="rank-strip-icon">💰</span>
+    <span>Ranking Criterion: <strong>MSP Business Impact</strong></span>
+  </div>
+  <div class="rank-chips">
+    <div class="rank-chip">
+      <span class="chip-icon">📈</span>
+      <div>
+        <div class="chip-title">Direct ARR</div>
+        <div class="chip-sub">Bundle + license growth</div>
+      </div>
+    </div>
+    <div class="chip-sep">+</div>
+    <div class="rank-chip">
+      <span class="chip-icon">⚡</span>
+      <div>
+        <div class="chip-title">Labor Cost Saved</div>
+        <div class="chip-sub">Admin hrs eliminated for MSPs</div>
+      </div>
+    </div>
+    <div class="chip-sep">+</div>
+    <div class="rank-chip">
+      <span class="chip-icon">🔓</span>
+      <div>
+        <div class="chip-title">Compliance Unlock</div>
+        <div class="chip-sub">CMMC/SOC2 deal unblock</div>
+      </div>
+    </div>
+    <div class="chip-note">Ties broken by MSP partner NPS impact &nbsp;·&nbsp; Security pillar: 25% eng capacity floor</div>
+  </div>
+</div>
+
+<!-- ══ TABLE ══════════════════════════════════════════════════ -->
+<div class="sec">📋 Priority Stack — 1 → 12 · Sorted by MSP Business Impact ↓</div>
+<div class="legend">
+  <span style="font-size:11px;color:var(--muted);font-weight:600;">Strategic Bet:</span>
+  <div class="leg-item"><div class="leg-dot" style="background:#F59E0B;"></div>Kaseya 365 Bundle</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#7c3aed;"></div>Agentic AI</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#16a34a;"></div>Unified Cyber Resilience</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#0891b2;"></div>Cross-Pillar</div>
+  &nbsp;&nbsp;
+  <span style="font-size:11px;color:var(--muted);font-weight:600;">Domain:</span>
+  <div class="leg-item"><div class="leg-dot" style="background:#3B82F6;"></div>Feature</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#7c3aed;"></div>AI</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#16a34a;"></div>Security</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#EF4444;"></div>Reliability</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#A855F7;"></div>Platform</div>
+</div>
+
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr>
+      <th style="width:44px;">Rank</th>
+      <th>Program / Goal</th>
+      <th>Strategic Bet</th>
+      <th>Domain</th>
+      <th>FY26 Target Outcome</th>
+      <th class="right" style="background:rgba(34,197,94,.06);">
+        MSP Business Impact
+        <div style="font-size:9px;font-weight:400;color:#22c55e;text-transform:none;letter-spacing:0;">Ranking criterion</div>
+      </th>
+      <th>DRI</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- 1 -->
+    <tr>
+      <td><div class="rank gold">1</div></td>
+      <td>
+        <div class="prog-nm">Kaseya 365 License Conversion</div>
+        <div class="prog-desc">Migrate RMM + security + backup customers to bundled K365 per-user pricing · eliminate multi-contract friction</div>
+      </td>
+      <td><span class="bet-align bet-k365">📦 Kaseya 365</span></td>
+      <td><span class="dom feat">Feature</span></td>
+      <td>
+        <div class="goal-kpi">Convert 40% of eligible base to K365 by Q4 2026</div>
+        <div class="goal-txt">Reduce avg tool spend per MSP 30% · churn rate −25%</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$18M</div>
+        <div class="rev-type">Bundle ARR + churn protection</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:100%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);color:#F59E0B;">BT</div>
+          <div><div class="dri-name">Brett Thompson</div><div class="dri-title">VP Product — Kaseya 365</div></div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- 2 -->
+    <tr>
+      <td><div class="rank gold">2</div></td>
+      <td>
+        <div class="prog-nm">Autotask PSA — AI Ticket Triage &amp; Auto-Resolution</div>
+        <div class="prog-desc">AI-driven L1 ticket routing, classification, and auto-resolution · eliminate manual ticket triage for MSP help desks</div>
+      </td>
+      <td><span class="bet-align bet-ai">🤖 Agentic AI</span></td>
+      <td><span class="dom ai">AI</span></td>
+      <td>
+        <div class="goal-kpi">Auto-resolve 35% of L1 tickets · triage time −70% by Q3 2026</div>
+        <div class="goal-txt">Save avg MSP 15 hrs/week of technician labor · NPS +18 pts</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$14M</div>
+        <div class="rev-type">Labor cost saved + K365 upsell</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:78%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);color:#7c3aed;">AL</div>
+          <div><div class="dri-name">Amara Lewis</div><div class="dri-title">Director, Product — Autotask PSA</div></div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- 3 -->
+    <tr>
+      <td><div class="rank gold">3</div></td>
+      <td>
+        <div class="prog-nm">Unified Backup Portal — Kaseya Intelligence</div>
+        <div class="prog-desc">Single pane of glass for on-premises, SaaS, endpoint, and cloud backup · centrally managed via Kaseya Intelligence platform</div>
+      </td>
+      <td><span class="bet-align bet-cyber">🛡️ Cyber Resilience</span></td>
+      <td><span class="dom sec">Security</span></td>
+      <td>
+        <div class="goal-kpi">100% of Datto BCDR customers on unified portal by Q4 2026</div>
+        <div class="goal-txt">Eliminate backup blind spots · backup admin time −40%</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$12M</div>
+        <div class="rev-type">BCDR ARR + cross-sell lift</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:67%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(22,163,74,.2);border:1px solid rgba(22,163,74,.4);color:#16a34a;">MR</div>
+          <div><div class="dri-name">Marcus Reid</div><div class="dri-title">VP Product — Datto BCDR</div></div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- 4 -->
+    <tr>
+      <td><div class="rank silver">4</div></td>
+      <td>
+        <div class="prog-nm">Datto RMM — Conversational AI Root Cause Analysis</div>
+        <div class="prog-desc">AI-powered activity log analysis · natural language queries to surface issue root cause · reduce MTTR for MSP technicians</div>
+      </td>
+      <td><span class="bet-align bet-ai">🤖 Agentic AI</span></td>
+      <td><span class="dom ai">AI</span></td>
+      <td>
+        <div class="goal-kpi">MTTR: 2hrs → 45min · AI query adoption 60% of RMM users by Q3 2026</div>
+        <div class="goal-txt">Reduce escalations to L2/L3 by 40% · technician efficiency +25%</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$10M</div>
+        <div class="rev-type">RMM premium tier + retention</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:56%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.4);color:#3B82F6;">SP</div>
+          <div><div class="dri-name">Sunita Patel</div><div class="dri-title">Director, Product — Datto RMM</div></div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- 5 -->
+    <tr>
+      <td><div class="rank silver">5</div></td>
+      <td>
+        <div class="prog-nm">CMMC Compliance Readiness for MSP Partners</div>
+        <div class="prog-desc">Kaseya security stack mapped to CMMC Level 2 controls · pre-built compliance evidence packages · audit-ready reporting for MSP defense sector clients</div>
+      </td>
+      <td><span class="bet-align bet-cyber">🛡️ Cyber Resilience</span></td>
+      <td><span class="dom sec">Security</span></td>
+      <td>
+        <div class="goal-kpi">150 MSP partners CMMC-ready by Q4 2026</div>
+        <div class="goal-txt">Unlock DoD/defense contractor pipeline · compliance ARR uplift</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$9M</div>
+        <div class="rev-type">Compliance-gated ARR unlock</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:50%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);color:#EF4444;">KC</div>
+          <div><div class="dri-name">Kevin Chen</div><div class="dri-title">Director, Security &amp; Compliance</div></div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- 6 -->
+    <tr>
+      <td><div class="rank silver">6</div></td>
+      <td>
+        <div class="prog-nm">Hyper-V Agentless Backup</div>
+        <div class="prog-desc">Agentless backup for Microsoft Hyper-V environments · zero-touch deployment · eliminate per-VM agent maintenance overhead for MSPs</div>
+      </td>
+      <td><span class="bet-align bet-cyber">🛡️ Cyber Resilience</span></td>
+      <td><span class="dom sec">Security</span></td>
+      <td>
+        <div class="goal-kpi">GA release by Q3 2026 · 500 MSP deployments by Q4 2026</div>
+        <div class="goal-txt">Capture Hyper-V segment currently served by competitors · deployment time −60%</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$7M</div>
+        <div class="rev-type">New Hyper-V segment ARR</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:39%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(20,184,166,.2);border:1px solid rgba(20,184,166,.4);color:#14B8A6;">NW</div>
+          <div><div class="dri-name">Nadia Walsh</div><div class="dri-title">Engineering Lead — BCDR</div></div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- 7 -->
+    <tr>
+      <td><div class="rank bronze">7</div></td>
+      <td>
+        <div class="prog-nm">SaaS Alerts + INKY — Email Phishing Defense</div>
+        <div class="prog-desc">Integration of SaaS Alerts (compromised account detection) and INKY (AI phishing prevention) · block account takeover before damage occurs</div>
+      </td>
+      <td><span class="bet-align bet-cyber">🛡️ Cyber Resilience</span></td>
+      <td><span class="dom sec">Security</span></td>
+      <td>
+        <div class="goal-kpi">Unified threat → response flow in &lt;5 min · integrated for 80% of SaaS Alerts customers by Q3 2026</div>
+        <div class="goal-txt">Block compromised account lateral movement · INKY cross-sell attach rate +30%</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$6M</div>
+        <div class="rev-type">INKY attach + churn protection</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:33%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(249,115,22,.2);border:1px solid rgba(249,115,22,.4);color:#F97316;">DR</div>
+          <div><div class="dri-name">Dana Rivera</div><div class="dri-title">Director, Product — Security</div></div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- 8 -->
+    <tr>
+      <td><div class="rank bronze">8</div></td>
+      <td>
+        <div class="prog-nm">Kaseya 365 Self-Service Onboarding</div>
+        <div class="prog-desc">Guided activation flow · tool consolidation wizard · first-value checkpoint within 24hrs of K365 purchase</div>
+      </td>
+      <td><span class="bet-align bet-k365">📦 Kaseya 365</span></td>
+      <td><span class="dom feat">Feature</span></td>
+      <td>
+        <div class="goal-kpi">Time-to-first-value: 5 days → 1 day · CS-assisted onboarding −50% by Q4 2026</div>
+        <div class="goal-txt">Increase 30-day retention for new K365 customers by 20%</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$5M</div>
+        <div class="rev-type">Activation ARR + CS cost savings</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:28%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.4);color:#3B82F6;">JH</div>
+          <div><div class="dri-name">James Huang</div><div class="dri-title">Director, Product — Growth</div></div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- 9 -->
+    <tr>
+      <td><div class="rank mid">9</div></td>
+      <td>
+        <div class="prog-nm">Visual AI — Backup Screenshot Verification (BCDR)</div>
+        <div class="prog-desc">AI image analysis to automatically verify backup screenshot integrity · eliminate manual daily spot-check labor for MSP technicians</div>
+      </td>
+      <td><span class="bet-align bet-ai">🤖 Agentic AI</span></td>
+      <td><span class="dom ai">AI</span></td>
+      <td>
+        <div class="goal-kpi">100% automated screenshot verification across all Datto BCDR instances by Q3 2026</div>
+        <div class="goal-txt">Eliminate 8 hrs/week manual verification per MSP · false-positive rate &lt;2%</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$4M</div>
+        <div class="rev-type">Labor hours saved + BCDR retention</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:22%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);color:#7c3aed;">TK</div>
+          <div><div class="dri-name">Takeshi Kimura</div><div class="dri-title">Engineering Lead — AI/ML</div></div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- 10 -->
+    <tr>
+      <td><div class="rank mid">10</div></td>
+      <td>
+        <div class="prog-nm">Kaseya 365 — Usage &amp; Spend Dashboard</div>
+        <div class="prog-desc">In-product MSP spending visibility · per-endpoint cost breakdown · upsell nudges surfaced at point of max value</div>
+      </td>
+      <td><span class="bet-align bet-k365">📦 Kaseya 365</span></td>
+      <td><span class="dom feat">Feature</span></td>
+      <td>
+        <div class="goal-kpi">Upsell conversion +20% · billing support tickets −35% by Q4 2026</div>
+        <div class="goal-txt">MSPs self-serve plan expansion without CS touch</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$4M</div>
+        <div class="rev-type">Upsell ARR + support cost reduction</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:22%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);color:#F59E0B;">LM</div>
+          <div><div class="dri-name">Lisa Martinez</div><div class="dri-title">Director, Product — Monetization</div></div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- 11 -->
+    <tr>
+      <td><div class="rank mid">11</div></td>
+      <td>
+        <div class="prog-nm">Agentic RMM — Automated Remediation Workflows</div>
+        <div class="prog-desc">AI-triggered, agentic runbooks that auto-remediate common endpoint issues · patch failures, disk space, service crashes — no technician required</div>
+      </td>
+      <td><span class="bet-align bet-ai">🤖 Agentic AI</span></td>
+      <td><span class="dom ai">AI</span></td>
+      <td>
+        <div class="goal-kpi">Auto-remediate 50% of common incident types by Q4 2026</div>
+        <div class="goal-txt">Reduce after-hours on-call incidents 30% · technician workload −20%</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$3M</div>
+        <div class="rev-type">Labor savings + RMM premium tier</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:17%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(16,185,129,.2);border:1px solid rgba(16,185,129,.4);color:#10B981;">AO</div>
+          <div><div class="dri-name">Andre Okafor</div><div class="dri-title">Product Manager — Datto RMM AI</div></div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- 12 -->
+    <tr>
+      <td><div class="rank mid">12</div></td>
+      <td>
+        <div class="prog-nm">Kaseya Intelligence — Cross-Platform Threat Correlation</div>
+        <div class="prog-desc">Unified threat intelligence layer correlating signals across RMM, backup, email, and endpoint security · single alert surface for MSP SOC teams</div>
+      </td>
+      <td><span class="bet-align bet-multi">🔗 Cross-Pillar</span></td>
+      <td><span class="dom plat">Platform</span></td>
+      <td>
+        <div class="goal-kpi">Unified threat view across 3+ Kaseya products · MTTD −50% by Q4 2026</div>
+        <div class="goal-txt">Enable Kaseya Intelligence as standalone premium SKU · reduce MSP alert fatigue 40%</div>
+      </td>
+      <td class="right rev-cell">
+        <div class="rev-amt">$3M</div>
+        <div class="rev-type">Platform ARR + cross-product retention</div>
+        <div class="rev-bar"><div class="rev-fill" style="width:17%;"></div></div>
+      </td>
+      <td>
+        <div class="dri-wrap">
+          <div class="dri-avatar" style="background:rgba(8,145,178,.2);border:1px solid rgba(8,145,178,.4);color:#0891b2;">RP</div>
+          <div><div class="dri-name">Riya Patel</div><div class="dri-title">Director, Platform — Kaseya Intelligence</div></div>
+        </div>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════ -->
+<div class="footer">
+  Kaseya Strategic Priority Stack · Q2 FY26 &nbsp;·&nbsp;
+  Owner: Director, Technical Program Management &nbsp;·&nbsp;
+  <a href="https://goyalsandeep2k.github.io/program-health-dashboard/" target="_blank">Program Health Dashboard ↗</a> &nbsp;·&nbsp;
+  <a href="https://github.com/goyalsandeep2k/program-health-dashboard" target="_blank">GitHub ↗</a>
+</div>
+
+</body>
+</html>
